@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'oasys'
+version = '0.1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    // SQL Parser (핵심)
+    implementation 'com.github.jsqlparser:jsqlparser:4.6'
+
+    // CSV 처리
+    implementation 'org.apache.commons:commons-csv:1.10.0'
+
+    // YAML (config)
+    implementation 'org.yaml:snakeyaml:2.2'
+
+    // Excel 리포트 (선택)
+    implementation 'org.apache.poi:poi:5.2.5'
+    implementation 'org.apache.poi:poi-ooxml:5.2.5'
+
+    // Logging
+    implementation 'org.slf4j:slf4j-api:2.0.12'
+    implementation 'ch.qos.logback:logback-classic:1.5.6'
+
+    // Test
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+}
+
+application {
+    mainClass = 'oasys.migration.cli.MigrationVerifyCli'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+tasks.register("runAliasSqlGenerateCli", JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = "oasys.migration.cli.AliasSqlGenerateCli"
+    if (project.hasProperty("appArgs")) {
+        args project.property("appArgs").toString().split("\\s+")
+    }
+}
