@@ -1,0 +1,1 @@
+UPDATE TBFAACAV074D SET LINK_YR = #LINK_YR# /* 신청일 */ , SPH = #SPH# , SPRT_LTD = #SPRT_LTD# , SPRT_AM = #SPRT_AM# /* 지원금액 */ , TOTAL_AM = #TOTAL_AM# /* 지원총액 */ WHERE LINK_YR = #LINK_YR# AND SPH = #SPH#

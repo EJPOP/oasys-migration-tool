@@ -1,0 +1,1 @@
+INSERT INTO PTL_BAI_NEWS_FILE (ENAIS_PST_ATCH_FILE_ID, ATCH_FILE_IDNO, FILE_STRE_COURS, STRE_FILE_NM, ORIGNL_FILE_NM, FILE_EXTSN, CRU_FILE_CPCT) VALUES ( #{atchFileId}, #{fileSn}, #{fileStreCours}, #{streFileNm}, #{orignlFileNm}, #{fileExtsn}, #{fileSize} )

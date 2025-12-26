@@ -1,0 +1,1 @@
+UPDATE /*CSPNBK421RpmIntAmUpdateByMouiNo*/ TBCSPNBK206L D1 SET RPM_INT_AM = #rpmIntAm# ,  D1.LAST_USER_ID = #LAST_USER_ID# /* 최종사용자아이디 */,  D1.LAST_PRCS_DEPT_CD = #LAST_PRCS_DEPT_CD# /* 최종처리부서코드 */,  D1.LAST_MENU_ID = #LAST_MENU_ID# /* 최종메뉴아이디 */,  D1.LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */WHERE D1.LEND_KND_CD = #lendKndCd# AND D1.PRCS_YM = #PRCS_YM# AND D1.MOUI_NO = #mouiNo#

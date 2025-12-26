@@ -1,0 +1,1 @@
+UPDATE /* CSPNBK711DealClosingYnUpdate */ TBCSPNBK502M D1 SET D1.DDLN_YN = #DDLN_YN# /* 마감여부 */,  D1.LAST_USER_ID = #LAST_USER_ID# /* 최종사용자아이디 */,  D1.LAST_PRCS_DEPT_CD = #LAST_PRCS_DEPT_CD# /* 최종처리부서코드 */,  D1.LAST_MENU_ID = #LAST_MENU_ID# /* 최종메뉴아이디 */,  D1.LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */WHERE D1.DEAL_DT = #DEAL_DT#

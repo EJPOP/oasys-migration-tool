@@ -1,0 +1,17 @@
+SELECT FT_SQNO /* 출장조순번 */,
+    BZTRVR_ALTMNT_SQNO /* 출장자배정순번 */,
+    BZTRP_SQNO /* 출장순번 */,
+    BZTRP_YR /* 출장년도 */,
+    EMP_SECD /* 직원구분코드 */,
+    BZTRVR_ENO /* 출장자직원전산번호 */,
+    BZTRVR_NM /* 출장자명 */,
+    OGDP_DEPT_CD /* 소속부서코드 */,
+    BZTRVR_JBGD_SECD /* 출장자직급구분코드 */,
+    DPTRE_RGN_SECD /* 출발지역구분코드 */,
+    BZTRP_BGNG_YMD /* 출장시작일자 */,
+    BZTRP_END_YMD /* 출장종료일자 */,
+    BZTRP_TML_YN /* 출장조장여부 */,
+    BZTRVR_OCPT_SECD /* 출장자직종구분코드 */,
+    OTSD_INST_CD /* 외부기관코드 */,
+    OTSD_INST_NM /* 외부기관명 */
+FROM TB_BADDED005L WHERE 1=1 AND BZTRP_YR = #BZTRP_YR# AND BZTRP_SQNO = #BZTRP_SQNO# AND FT_SQNO = #FT_SQNO# AND BZTRVR_ALTMNT_SQNO = #BZTRVR_ALTMNT_SQNO# AND BZTRVR_ENO = #BZTRVR_ENO# AND BZTRVR_JBGD_SECD IN ('115','116','187', '007') /* 1급, 2급, 고위공무원, 차관차관급(2019.10.10 yyh) */ AND ROWNUM = 1

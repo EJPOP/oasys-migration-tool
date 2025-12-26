@@ -1,0 +1,13 @@
+SELECT D1.EVL_YR AS EVL_YR /* 평가년도 */,
+    D1.HLYR_DVSN_CD AS HLYR_DVSN_CD /* 반기구분코드 */,
+    D1.PTCPT_CNB /* 피평가자 전산번호 */,
+    '10001' AS CVLCPT_TASK_SECD /* 민원업무구분코드 */,
+    D1.TASK_KDCD /* 업무종류코드 */,
+    D1.TSK_NO AS TSK_NO /* 업무번호 */,
+    #EVL_CMTR_CNB# AS #EVL_CMTR_CNB# /* 평가자전산번호 */,
+    D2.HIRK_DPT_CD AS #N/A /* 부서코드1 */,
+    D1.CHR_DPT_CD AS SRECS_DEPT_CD /* 부서코드 */,
+    D1.JBGD_SECD AS JBGD_SECD /* 직급구분코드 */,
+    ROUND( TO_NUMBER(#NAUD_TSK_EVL_SC#) * (D1.CTB_RT/100), 2) AS ROUND /* 개인업무평점 */,
+    #EVL_DTM_YN# AS #EVL_DTM_YN# /* 평가확정여부 */
+FROM TBCSPAOE025M D1 , TBDCMACM002M D2 WHERE D1.CHR_DPT_CD = D2.SRECS_DEPT_CD AND EVL_YR = #EVL_YR# AND HLYR_DVSN_CD = #HLYR_DVSN_CD# AND TASK_KDCD = #TASK_KDCD# AND TSK_NO = #TSK_NO#

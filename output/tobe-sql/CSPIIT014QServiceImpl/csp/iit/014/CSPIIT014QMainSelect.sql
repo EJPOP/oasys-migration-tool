@@ -1,0 +1,5 @@
+SELECT A.CON_ID,
+    /*연계ID*/ SUBSTR(A.CON_LG_REGI_DH,1,14) AS SUBSTR,
+    /*연계로그등록일시*/ A.RCPT_DOC_NM,
+    /*수신문서명*/ A.LG_TXT /* 로그내용 */
+FROM TBCSPIIT010H A /*PC장비관리테이블*/ WHERE 1=1 AND A.CON_LG_REGI_DH &gt;= #strCON_LG_REGI_DHS#||'000000000' AND A.CON_LG_REGI_DH &lt;= #strCON_LG_REGI_DHE#||'999999999' AND A.CON_ID LIKE '%'||#strCON_ID#||'%'

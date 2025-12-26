@@ -1,0 +1,16 @@
+/* AWUSYMDCM001EMapper.findSubList 공통코드 상세 리스트 조회 */ SELECT CD_DVSN_CD,
+    CD,
+    CD_NM,
+    USE_YN /* 사용여부 */,
+    USR_DFN_1,
+    USR_DFN_2,
+    USR_DFN_3,
+    USR_DFN_4,
+    USR_DFN_5,
+    USR_DFN_6,
+    USR_DFN_7,
+    USR_DFN_8,
+    USR_DFN_9,
+    OTPT_SEQ,
+    COUNT(1) OVER () AS 1
+FROM TBAWUSYMDCM001M T1 WHERE 1=1 AND T1.CD <> '00000000' AND T1.CD_DVSN_CD = #{srchCdDvsnCd} ORDER BY T1.OTPT_SEQ ASC, T1.CD ASC

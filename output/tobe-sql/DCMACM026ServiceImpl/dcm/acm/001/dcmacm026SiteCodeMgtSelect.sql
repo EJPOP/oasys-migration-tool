@@ -1,0 +1,2 @@
+SELECT *
+FROM TBDCMACM016M WHERE 1=1 SIT_NM LIKE '%'||#strSitNm# ||'%' USE_YN LIKE '%'||#strUseYn# ||'%' ORDER BY SIT_CD

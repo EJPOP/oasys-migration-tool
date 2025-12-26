@@ -1,0 +1,8 @@
+SELECT A.FRS_MDM_SQNO /* 포렌식매체순번 */,
+    /*일련번호*/ F_CODE_NM('1000728',A.LAG_CAT_CD) AS F_CODE_NM,
+    /*대분류코드*/ F_CODE_NM('1000729',A.MID_CAT_CD) AS F_CODE_NM,
+    /*중분류코드*/ A.SALL_CAT_CD,
+    /*소분류코드*/ A.RSCH_ASMT_TTL AS RSCH_ASMT_TTL /* 연구과제제목 */,
+    /*제목명*/ F_CODE_NM('1000731',A.ORG_TYP_CD) AS F_CODE_NM,
+    /*기관유형코드*/ A.MAIN_ORG_NM /* 주요기관명 */
+FROM TBAEPGKM019M A /*PC장비코드*/ WHERE 1=1 AND A.LAG_CAT_CD = #strLAG_CAT_CD# AND A.MID_CAT_CD = #strMID_CAT_CD# AND A.ORG_TYP_CD = #strORG_TYP_CD# AND A.RSCH_ASMT_TTL LIKE '%'||#strTIT_NM#||'%' ORDER BY A.FRS_MDM_SQNO DESC

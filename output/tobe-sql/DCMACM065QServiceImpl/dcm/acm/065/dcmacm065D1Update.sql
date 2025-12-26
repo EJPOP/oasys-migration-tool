@@ -1,0 +1,1 @@
+UPDATE TBDCMACM065D1 SET LINK_YR = #LINK_YR# /* 신청일 */ , KBN = #KBN# /* 구분 */ , SPH = #SPH# /* 분야 */ , SPRT_AM = #SPRT_AM# /* 지원금액 */ , SPRT_RT = #SPRT_RT# /* 지원요율 */ WHERE LINK_YR = #LINK_YR# AND KBN = #KBN# AND SPH = #SPH#

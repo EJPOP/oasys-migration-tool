@@ -1,0 +1,12 @@
+SELECT A.SORT_SQNO /* 정렬순번 */,
+    '' AS ADT_STP_NM /* 감사단계명 */,
+    B.RPTP_NM /* 보고서명 */,
+    B.RPTP_KDCD /* 보고서종류코드 */,
+    A.ATRZ_DMND_ID /* 결재요청아이디 */,
+    A.ADT_PLAN_YR AS ADT_PLAN_YR /* 감사계획년도 */,
+    A.ADT_PLAN_SQNO AS ADT_PLAN_SQNO /* 감사계획순번 */,
+    A.DEPT_CD AS DEPT_CD /* 부서코드 */,
+    A.DOC_ID /* 문서아이디 */,
+    A.ATRZ_SECD /* 결재구분코드 */,
+    A.ATRZ_DOC_SECD /* 결재문서구분코드 */
+FROM TB_BADDED132M A INNER JOIN TB_BADDED131M B ON A.ADT_PLAN_YR = B.ADT_PLAN_YR AND A.ADT_PLAN_SQNO = B.ADT_PLAN_SQNO AND A.DEPT_CD = B.DEPT_CD AND A.DOC_ID = B.DOC_ID WHERE A.ATRZ_DMND_ID = #ATRZ_DMND_ID# AND A.ATRZ_DOC_SECD = #CRU_ATRZ_DOC_SECD# ORDER BY A.SORT_SQNO

@@ -1,0 +1,7 @@
+SELECT T1.BZTRP_YR /* 출장년도 */,
+    T1.FRS_MDM_SQNO /* 포렌식매체순번 */,
+    T1.BZT_TIT,
+    T1.SRECS_DEPT_CD /* 심사재심의부서코드 */,
+    (SELECT AS HIRK_DPT_CD
+FROM TBDCMACM002M B WHERE B.SRECS_DEPT_CD = T1.SRECS_DEPT_CD) AS HIRK_DPT_CD /*상위부서코드*/ ,T1.BGT_DVSN /* 예산구분 */ ,REGEXP_SUBSTR(T1.BGT_DVSN, '[^|]+', 1, 1) AS BGT_DVSN1 ,REGEXP_SUBSTR(T1.BGT_DVSN, '[^|]+', 1, 2) AS BGT_DVSN2 ,REGEXP_SUBSTR(T1.BGT_DVSN, '[^|]+', 1, 3) AS BGT_DVSN3 ,REGEXP_SUBSTR(T1.BGT_DVSN, '[^|]+', 1, 4) AS BGT_DVSN4 ,T1.BZT_TRDS ,T1.BZT_TRDE ,TO_DATE(T1.BZT_TRDE) - TO_DATE(T1.BZT_TRDS) AS BZT_PRD /* 출장기간 */ ,T1.NBAI_BZT_NUM /* 원외 출장자 */ ,T1.JDG_TG /* 심사대상여부 */ ,T1.BAI_APLN_FR /* 항공운임(원부담) */ ,T1.ORG_APLN_FR /* 항공운임(초청기관부담) */ ,T1.BAI_STY_COST /* 체제비(원부담) */ ,T1.ORG_STY_COST /* 체제비(초청기관부담) */ ,T1.BAI_ETC_COST /* 기타비용(원부담) */ ,T1.ORG_ETC_COST /* 기타비용(초청기관부담) */ ,T1.BZT_PLN_DOC_ID /* 출장 계획서 문서 ID*/ ,T1.BZT_PLN_DOC_NM /* 출장계획서 문서명*/ ,T1.BGT_RQS_DOC_ID /* 심사요청서 문서 ID*/ ,T1.BGT_RQS_DOC_NM /* 심사요청서 문서명*/ ,T1.RVW_VT_DOC_ID /* 심의의결서 문서 ID*/ ,T1.RVW_VT_DOC_NM /* 심의의결서 문서명*/ ,(SELECT CVLCPT_DOC_ID /* 민원문서아이디 */
+FROM TBCSPHIN004L WHERE FRS_MDM_SQNO = T1.FRS_MDM_SQNO AND BZTRP_YR = T1.BZTRP_YR ) AS BZT_RSLT_RPRT_DOC_ID /* 출장 결과보고서 문서 ID*/ ,T1.APV_STA /* 결재상태코드*/ ,T1.ATRZ_DOC_NO /* 결재문서번호(기본) */ ,T1.APV_STA2 /* 결재상태코드*/ ,T1.APV_DOC_NO2 /* 결재문서번호(출장결과보고) */ ,T1.HIRANKPOS /* 고위직포함 여부 */ FROM TBCSPHIN004M T1 WHERE 1=1 AND T1.BZTRP_YR = #BZTRP_YR# AND T1.FRS_MDM_SQNO = #FRS_MDM_SQNO# AND T1.ATRZ_DOC_NO = #ATRZ_DOC_NO# AND T1.APV_DOC_NO2 = #strApvDocNo2#

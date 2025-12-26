@@ -1,0 +1,21 @@
+SELECT LINK_YR /* 연계년도 */,
+    SRECS_DEPT_CD /* 심사재심의부서코드 */,
+    F_DPT_INFO(SRECS_DEPT_CD, '1') AS CNSTN_MBCMT_DEPT_NM /* 자문위원부서명 */,
+    FRS_MDM_SQNO /* 포렌식매체순번 */,
+    REL_TSK_CD,
+    F_AUD_OW_HNDL_KND_NM(REL_TSK_CD) || (CASE WHEN NVL(REL_NO,0) > 0 THEN '-'|| TO_CHAR(REL_NO) ELSE '' END) AS REL_TASK_NM /* 관계업무명 */,
+    REL_NO,
+    DTM_DT,
+    SRECS_REL_INST_CD /* 심사재심의관계기관코드 */,
+    F_ORG_INFO(SRECS_REL_INST_CD, '1') AS REL_INST_NM /* 관계기관명 */,
+    RSCH_ASMT_TTL /* 연구과제제목 */,
+    FLD_AUD_DT,
+    HNDL_CHGR_CNB,
+    F_USR_INFO(HNDL_CHGR_CNB, '2') AS SRECS_PRCS_PIC_NM /* 심사재심의처리담당자명 */,
+    APV_DT,
+    PRCS_STTS_CN /* 처리상태내용 */,
+    CMT_SBCN_CN /* 위원회부의내용 */,
+    ENFC_YMD /* 시행일자 */,
+    RMRK_CN /* 비고내용 */
+FROM TBBADHAB006M WHERE 1=1 AND SRECS_DEPT_CD IN (SELECT SRECS_DEPT_CD /* 심사재심의부서코드 */
+FROM TABLE(F_AUTH_DEPT(#strCnb#, #strDptAuth#, '', #strDptCd#))) AND LINK_YR = #LINK_YR# AND SRECS_DEPT_CD = #SRECS_DEPT_CD# ORDER BY SRECS_DEPT_CD, FRS_MDM_SQNO DESC

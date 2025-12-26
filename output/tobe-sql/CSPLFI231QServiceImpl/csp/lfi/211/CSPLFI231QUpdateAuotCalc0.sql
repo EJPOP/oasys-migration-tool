@@ -1,0 +1,2 @@
+UPDATE TBCSPLFI102M SET ALW_AM = 0,  LAST_USER_ID = #LAST_USER_ID# /* 최종사용자아이디 */,  LAST_PRCS_DEPT_CD = #LAST_PRCS_DEPT_CD# /* 최종처리부서코드 */,  LAST_MENU_ID = #LAST_MENU_ID# /* 최종메뉴아이디 */,  LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */WHERE 1=1 AND TRGT_NOP_ENO IN (SELECT TRGT_NOP_ENO /* 대상인원직원전산번호 */
+FROM TBDCMACM001M WHERE HDOF_SECD NOT IN ('AAA','AAB')) AND FIX_YN <> 'F' /* 휴직복귀 후 고정상태에 수당 입력했는데도 수당금액이 0원처리되어 추가함 WOK_DVSN_CD AAA 재직 ABA 휴직 ABB 휴직 DAA 퇴직 DAB 전출 AAB 재직(파견) BAB 파견(전입) */

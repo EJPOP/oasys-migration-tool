@@ -1,0 +1,3 @@
+SELECT CLU_CD /* 특별가산점 항목코드 */,
+    CLU_NM /* 특별가산점 항목명 */
+FROM TBCSPAOE011M WHERE USE_YN = 'Y' GROUP BY EVL_YR, HLYR_DVSN_CD, CLU_CD, CLU_NM

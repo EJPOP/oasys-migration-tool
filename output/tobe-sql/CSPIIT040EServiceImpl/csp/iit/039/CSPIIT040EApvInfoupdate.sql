@@ -1,0 +1,1 @@
+UPDATE TBCSPIIT021M /* 자료요청기본 */ SET ATRZ_DOC_NO = #ATRZ_DOC_NO# /* 결재문서번호 */,  /* 결재문서번호 */ CHF_APV_STA_CD = #CHF_APV_STA_CD#,  PRGRS_STTS_SECD = #PRGRS_STTS_SECD# /* 진행상태구분코드 */WHERE COPUT_BRD_DVSN_CD = '02' /* 전산게시판구분코드 */ AND ACMP_SNO = #ACMP_SNO# /* 자료요청순번 */

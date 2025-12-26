@@ -1,0 +1,1 @@
+DELETE TBBADDED016B WHERE 1 = 1 AND DST_NM LIKE #strDepStadStnNm#||'%' /*출발역*/ AND ARVL_CRTR_DST_NM LIKE #strArvStadStnNm#||'%' /*도착역*/ AND TFE_KDCD = #TFE_KDCD# /*교통편*/ AND BZTRP_SECD = #BZTRP_SECD# /*출장구분코드*/

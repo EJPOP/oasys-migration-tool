@@ -1,0 +1,1 @@
+/* AWUSYMBBM003EMapper.deletePopup 팝업 삭제 */ DELETE TBAWUSYMCPM001M WHERE PP_ID = #{ppId}

@@ -1,0 +1,4 @@
+SELECT BOKG_DVSN_CD /* 예약구분코드 */,
+    HLDY /* 휴일 */,
+    HLDY_RSN_TXT /* 휴일사유내용 */
+FROM TBCSPMWF011M WHERE BOKG_DVSN_CD = #strBokgDvsnCd# AND HLDY >= TO_CHAR(ADD_MONTHS(SYSDATE, -6), 'YYYYMMDD') /* 6개월 전까지만 보이게*/ ORDER BY HLDY DESC

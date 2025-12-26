@@ -1,0 +1,1 @@
+UPDATE TBCSPGSU001M SET PRPS_STA_CD = 'C' /*진행상태*/ , ATRZ_DOC_NO = '' /* 결재문서번호 */, LAST_MDFCN_DT = SYSDATE /*최종수정일시*/ WHERE ATRZ_DOC_NO = #ATRZ_DOC_NO#

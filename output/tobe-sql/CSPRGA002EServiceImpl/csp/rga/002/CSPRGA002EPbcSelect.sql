@@ -1,0 +1,15 @@
+SELECT T1.PBC_YR AS PBC_YR /* 발간년도 */,
+    T1.PBC_NO AS PBC_NO /* 발간번호 */,
+    T1.FRS_MDM_SQNO AS FRS_MDM_SQNO /* 포렌식매체순번 */,
+    T1.PBC_YR || '-' || T1.PBC_NO || '-' || T1.FRS_MDM_SQNO AS PBC_YR /* 발간연번호 */,
+    T1.DSPS_RQT_NM AS DSPS_RQT_NM /* 처분요구명 */,
+    T1.MNG_NO AS MNG_NO /* 관리번호 */,
+    T1.CP_CNT AS CP_CNT /* 부수 */,
+    T1.PNCG_CD AS PNCG_CD /* 펀칭코드 */,
+    T1.BKBNG_CD AS BKBNG_CD /* 제본코드 */,
+    T1.PRT_PG_KND_CD AS PRT_PG_KND_CD /* 인쇄면종류코드 */,
+    T1.DLV_DDLN_DT AS DLV_DDLN_DT /* 납품기한일 */,
+    T1.RMRK_CN AS RMRK_CN /* 비고내용 */,
+    F_CODE_NM('1000905', T1.BKBNG_CD) AS F_CODE_NM /* 제본코드명 */,
+    F_CODE_NM('1000906', T1.PRT_PG_KND_CD) AS F_CODE_NM /* 인쇄면종류코드명 */
+FROM TBCSPRGA002L T1 WHERE 1=1 AND PBC_YR = #strPbcYr# AND PBC_NO = #strPbcNo# ORDER BY T1.PBC_YR ,T1.PBC_NO ,T1.FRS_MDM_SQNO

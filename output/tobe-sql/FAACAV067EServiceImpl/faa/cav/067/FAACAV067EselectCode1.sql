@@ -1,0 +1,3 @@
+/* faa/cav/067/FAACAV067EselectCode1 */ SELECT CHIF_CD /* 장코드 */,
+    CHIF_CDNM /* 장코드명 */
+FROM TWFAACAV070C WHERE USER_HSTRY_SECD = '2'

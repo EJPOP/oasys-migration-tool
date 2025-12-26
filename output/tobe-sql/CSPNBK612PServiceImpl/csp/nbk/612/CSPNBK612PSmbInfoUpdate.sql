@@ -1,0 +1,1 @@
+UPDATE /* CSPNBK612PSmbInfoUpdate */ TBCSPNBK301M SET LAST_USER_ID = #LAST_USER_ID# /* 최종사용자아이디 */,  LAST_PRCS_DEPT_CD = #LAST_PRCS_DEPT_CD# /* 최종처리부서코드 */,  LAST_MENU_ID = #LAST_MENU_ID# /* 최종메뉴아이디 */,  LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */,  CNL_YN = #cnlYn# ,  CNL_OPT_MOUI_NO = #optMouiNo# ,  CNL_PET_DH = SYSDATE WHERE SMB_DEAL_DT = #smbDealDt# AND SMB_SLN = #smbSln#

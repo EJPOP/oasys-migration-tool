@@ -1,0 +1,1 @@
+UPDATE TB_BADDED103M SET ATRZ_DMND_ID = NULL /* 결재요청아이디 */,  ATRZ_STTS_SECD = '10' /*문서함 결재정보 초기화 시 작성중(10) 으로 세팅*/ ,  LAST_USER_ID = #LAST_USER_ID# /* 최종사용자ID */ ,  LAST_PRCS_DEPT_CD = #LAST_PRCS_DEPT_CD# /* 최종거래부서코드 */ ,  LAST_MENU_ID = #LAST_MENU_ID# /* 최종메뉴ID */ ,  LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */ WHERE ATRZ_DMND_ID = #ATRZ_DMND_ID#

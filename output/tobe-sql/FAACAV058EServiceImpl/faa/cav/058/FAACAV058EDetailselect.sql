@@ -1,0 +1,17 @@
+/* faa/cav/058/FAACAV058EDetailselect */ SELECT ROWNUM,
+    BBS_SECD /* 게시판구분코드 */,
+    FRS_MDM_SQNO /* 포렌식매체순번 */,
+    GROUP_NO /* 그룹번호 */,
+    ENAIS_PST_CMNT_NMTM /* ENAIS게시물댓글횟수 */,
+    ENAIS_PST_ANS_NMTM /* ENAIS게시물답변횟수 */,
+    RSCH_ASMT_TTL /* 연구과제제목 */,
+    REG_DT /* 등록일시 */,
+    REG_INST_NM /* 등록기관명 */,
+    RGTR_ID /* 등록자아이디 */,
+    RGTR_NM /* 등록자명 */,
+    ENAIS_PST_INQ_NMTM /* ENAIS게시물조회횟수 */,
+    TO_CHAR(BBS_CN) AS BBS_CN /* 게시판내용 */,
+    CVLCPT_DOC_ID /* 민원문서아이디 */,
+    DECODE(CVLCPT_DOC_ID, NULL, '', 'Y') AS CVLCPT_DOC_ID /* 민원문서아이디 */,
+    CRU_TELNO /* 부패전화번호 */
+FROM TWFAACAV065L WHERE BBS_SECD = #BBS_SECD# AND FRS_MDM_SQNO = #FRS_MDM_SQNO# ORDER BY GROUP_NO DESC, FRS_MDM_SQNO ASC

@@ -1,0 +1,3 @@
+SELECT A.OGDP_INST_CD /* 소속기관코드 */,
+    (SELECT B.PROF_RBPRSN_INST_NM AS PROF_RBPRSN_INST_NM /* 증명책임자기관명 */
+FROM TBDCMACM015M B WHERE B.INST_CD = A.OGDP_INST_CD) AS TPOF_OGDP_INST_NM /* 소속기관명 */ , A.WRK_RANK_CD /* 직급코드 */ , A.JOCP_DT /* 입사일 */ , A.RTRM_YMD /* 퇴사일 */ , A.CRU_RRNO_SCRTY /* 암호화주민등록번호 */ , A.RRN_SRNO /* 주민등록번호일련번호 */ , A.FRS_MDM_SQNO /* 일련번호 */ FROM TBCSPBII610L A WHERE CRU_RRNO_SCRTY = #CRU_RRNO_SCRTY# AND RRN_SRNO = #strRrnSrno#

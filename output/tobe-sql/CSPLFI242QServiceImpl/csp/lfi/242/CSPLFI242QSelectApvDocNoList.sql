@@ -1,0 +1,4 @@
+SELECT A.FRS_MDM_SQNO /* 포렌식매체순번 */,
+    A.ATRZ_DOC_NO /* 결재문서번호 */,
+    A.LINK_YR /* 연계년도 */
+FROM TBCSPLFI242M A WHERE 1=1 AND A.ATRZ_DOC_NO = #ATRZ_DOC_NO#

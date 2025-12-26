@@ -1,0 +1,3 @@
+/* faa/cav/061/FAACAV061EselectCode4 */ SELECT SITM_CD /* 목코드 */,
+    SITM_NM /* 목명 */
+FROM TWFAACAV073C WHERE USER_HSTRY_SECD = '1'

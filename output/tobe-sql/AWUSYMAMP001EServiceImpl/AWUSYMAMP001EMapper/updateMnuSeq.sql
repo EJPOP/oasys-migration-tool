@@ -1,0 +1,1 @@
+/* AWUSYMAMP001EMapper.updateMnuSeq 메뉴 순서 수정 */ UPDATE TBAWUSYMAMP001M SET MENU_SQNO = #{mnuSeq} /* 메뉴순번 */,  FNL_USR_ID = #{ssUsrId} /* 최종사용자아이디 */,  LAST_PRCS_DEPT_CD = #{ssDptCd} /* 최종처리부서코드 */,  FNL_MNU_ID = #{ssMnuId} /* 최종메뉴아이디 */,  LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */WHERE MENU_ID = #{mnuId}

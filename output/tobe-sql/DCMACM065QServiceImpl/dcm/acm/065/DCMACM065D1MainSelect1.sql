@@ -1,0 +1,6 @@
+SELECT T1.LINK_YR /* 연계년도 */,
+    T1.KBN,
+    T1.SPH,
+    T1.SPRT_AM,
+    T1.SPRT_RT
+FROM TBDCMACM065D1 T1 WHERE 1=1 AND T1.LINK_YR = #LINK_YR# AND T1.KBN = #strKbn# AND T1.SPH = #strSph#

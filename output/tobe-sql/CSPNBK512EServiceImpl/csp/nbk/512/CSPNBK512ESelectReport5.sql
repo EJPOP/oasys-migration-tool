@@ -1,0 +1,7 @@
+/* * 예상이익금배당지급자 * 위의 타이틀부분 */ SELECT DVD_YR,
+    THTM_DVD_TG_PRF_M,
+    WTDW_ACM + NWD_ACM + EX_ACM AS WTDW_ACM,
+    WTDW_DVD_RTS,
+    NWD_DVD_RTS,
+    EX_DVD_RTS
+FROM TBCSPNBK401M WHERE DVD_YR = #dvdYr#

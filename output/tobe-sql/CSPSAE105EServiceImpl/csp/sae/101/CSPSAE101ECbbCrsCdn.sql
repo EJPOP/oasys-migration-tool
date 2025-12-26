@@ -1,0 +1,3 @@
+SELECT CRS_CDN /* 과정기수 */,
+    CRS_CDN /* 과정기수 */
+FROM TBCSPSAE201D WHERE LINK_YR = #LINK_YR# AND CRS_CD = #strEDU_CRS_CD#

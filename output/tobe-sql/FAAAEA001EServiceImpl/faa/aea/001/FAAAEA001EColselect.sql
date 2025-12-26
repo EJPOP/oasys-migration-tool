@@ -1,0 +1,9 @@
+SELECT JRSD_INST_CD /* 소관기관코드 */,
+    SYS_NM,
+    UNT_SYS_NM,
+    TBL_ID /* 테이블아이디 */,
+    COL_ID,
+    COL_NM,
+    VLD_VAL_DES,
+    DFALT_VAL_DES
+FROM TBFAAAEA004M WHERE 1=1 AND UNT_SYS_NM = #strUntSysNm# AND TBL_ID = #TBL_ID# AND SYS_NM = #strSysNm# AND JRSD_INST_CD = #JRSD_INST_CD#

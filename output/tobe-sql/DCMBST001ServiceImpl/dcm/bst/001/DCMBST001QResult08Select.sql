@@ -1,0 +1,18 @@
+/*심사청구 재심의미처리*/ SELECT *
+FROM ( SELECT STATS_YR /* 통계년도 */,
+    STTC_MN,
+    STTC_WEK_NO,
+    STTC_SNO,
+    STTC_DVSN_CD,
+    NVL(STTC_NM_2,0)+NVL(STTC_NM_3,0) AS STTC_NM_2,
+    /*심사 미처리6월*/ NVL(STTC_NM_4,0) AS STTC_NM_4,
+    /*심사 미처리1년*/ NVL(STTC_NM_5,0) + NVL(STTC_NM_6,0) AS STTC_NM_5 /* 심사 미처리1년초과 */
+FROM TBDCMBST002M T1 WHERE T1.STTC_DVSN_CD = #strSttcDvsnCd1# UNION ALL SELECT STATS_YR /* 통계년도 */,
+    STTC_MN,
+    STTC_WEK_NO,
+    STTC_SNO,
+    STTC_DVSN_CD,
+    NVL(STTC_NM_2,0) + NVL(STTC_NM_3,0) AS STTC_NM_2,
+    /*재심의 미처리6월*/ NVL(STTC_NM_4,0) AS STTC_NM_4,
+    /*재심의 미처리1년*/ NVL(STTC_NM_5,0) + NVL(STTC_NM_6,0) AS STTC_NM_5 /* 재심의 미처리1년초과 */
+FROM TBDCMBST002M T2 WHERE T2.STTC_DVSN_CD = #strSttcDvsnCd2# ) WHERE STATS_YR = #STATS_YR# AND STTC_MN = #strMn# AND STTC_WEK_NO = #strWekNo# AND STTC_SNO = 1

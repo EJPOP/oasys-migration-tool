@@ -1,0 +1,3 @@
+/* AWUBAKCII002EMapper.findSdlExistDayList 일정이 존재하는 날짜 리스트 조회 */ SELECT COUNT(*) || '건' AS TOTAL_SDL,
+    TO_CHAR(TO_DATE(SDL_DH, 'YYYYMMDD'), 'YYYY-MM-DD') AS TO_CHAR
+FROM TBAWUBAKCII002M WHERE 1=1 AND SDL_DH BETWEEN #{searchStart} AND #{searchEnd} GROUP BY SDL_DH;

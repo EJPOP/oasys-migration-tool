@@ -1,0 +1,4 @@
+MERGE INTO TBCSPLTT002M T1 USING ( SELECT #TK_YE# AS #TK_YE#,
+    #TK_SLN# AS #TK_SLN#,
+    '3' AS ATT_FL_DVSN_CD
+FROM DUAL ) T2 ON ( T1.TK_YE = T2.TK_YE AND T1.TK_SLN = T2.TK_SLN AND T1.ATT_FL_DVSN_CD = T2.ATT_FL_DVSN_CD ) WHEN MATCHED THEN UPDATE SET CVLCPT_DOC_ID = #CVLCPT_DOC_ID# WHEN NOT MATCHED THEN INSERT INSERT ( TK_YE /*제안연도*/ ,TK_SLN /*제안연번*/ ,ATT_FL_DVSN_CD /*제안천부파일구분코드*/ ,CVLCPT_DOC_ID /*첨부파일문서ID*/ ,ADT_PLAN_DOC_TPCD /*문서유형코드*/ ,FRST_REG_DT /*최초등록일시*/ ,LAST_MDFCN_DT /*최종수정일시*/ ) VALUES ( #TK_YE# /*제안연도*/ ,#TK_SLN# /*제안연번*/ ,'3' /*제안천부파일구분코드*/ ,#CVLCPT_DOC_ID# /*첨부파일문서ID*/ ,'' /*문서유형코드*/ ,SYSDATE /*최초등록일시*/ ,SYSDATE /*최종수정일시*/ )

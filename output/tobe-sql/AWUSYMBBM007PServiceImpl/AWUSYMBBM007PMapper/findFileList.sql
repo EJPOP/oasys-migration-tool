@@ -1,0 +1,9 @@
+SELECT T1.ENAIS_PST_ATCH_FILE_ID /* ENAIS게시물첨부파일아이디 */,
+    T1.ATCH_FILE_IDNO /* 첨부파일식별번호 */,
+    T1.FILE_STRE_COURS,
+    T1.STRE_FILE_NM,
+    T1.ORIGNL_FILE_NM,
+    T1.FILE_EXTSN,
+    T1.CRU_FILE_CPCT /* 부패파일용량 */,
+    REPLACE(T1.FILE_STRE_COURS,'/file/', '/etcfile1/interdata/portal/') AS REPLACE
+FROM PTL_BAI_NEWS_FILE T1 WHERE 1=1 AND ENAIS_PST_ATCH_FILE_ID = #{atchFileId} ORDER BY FILE_SN ASC

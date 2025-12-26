@@ -1,0 +1,5 @@
+SELECT *
+FROM ( select JRSD_INST_CD /* 소관기관코드 */,
+    row_numBER() OVER(ORDER BY JRSD_INST_CD ASC) AS ROW_NUMBER
+from ( SELECT DISTINCT AS JRSD_INST_CD
+FROM TBFAAAEA001M ) where length(JRSD_INST_CD) = 7 ) WHERE NN BETWEEN #num# and #num2#

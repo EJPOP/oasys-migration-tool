@@ -1,0 +1,15 @@
+SELECT B.ADT_STP_NM /* 감사단계명 */,
+    A.RPTP_NM /* 보고서명 */,
+    A.LAST_MDFCN_DT /* 최종수정일시 */,
+    A.ATRZ_DMND_ID /* 결재요청아이디 */,
+    A.ADT_YR /* 감사년도 */,
+    A.ADT_NO /* 감사번호 */,
+    A.ADT_STP_SECD /* 감사단계구분코드 */,
+    A.DOC_ID /* 문서아이디 */,
+    A.SORT_SQNO /* 정렬순번 */,
+    A.FRST_USER_ID /* 최초사용자아이디 */,
+    A.LAST_USER_ID /* 최종사용자아이디 */,
+    A.LAST_PRCS_DEPT_CD /* 최종처리부서코드 */,
+    A.LAST_MENU_ID /* 최종메뉴아이디 */,
+    A.FRST_REG_DT /* 최초등록일시 */
+FROM TB_BADDED103M A INNER JOIN TB_BADDED101M B ON A.ADT_YR = B.ADT_YR AND A.ADT_NO = B.ADT_NO AND A.ADT_STP_SECD = B.ADT_STP_SECD WHERE A.ATRZ_DMND_ID IS NULL AND A.RPTP_NM LIKE '%' || #schText# || '%'

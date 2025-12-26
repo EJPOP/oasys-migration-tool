@@ -1,0 +1,12 @@
+SELECT A.APL_NO,
+    F_USR_INFO(A.APL_USR, '2') ||'('|| F_DPT_INFO(F_USR_INFO(A.APL_USR, '5'),'1') ||')' AS F_USR_INFO,
+    A.SMT_YN,
+    CASE WHEN A.SMT_YN = 'Y' THEN TO_CHAR(A.SBMSN_YMD, 'YYYY-MM-DD') ELSE '' END AS SBMSN_YMD /* 제출일자 */,
+    A.PRGRS_STTS_SECD /* 진행상태구분코드 */,
+    F_CODE_NM('1001000',NVL(PRGRS_STTS_SECD,'10')) AS F_CODE_NM,
+    A.SLCT_RPD_NM /* 청구명 */,
+    A.BBS_CN /* 게시판내용 */,
+    A.CVLCPT_DOC_ID /* 민원문서아이디 */,
+    A.EXAM_TXT,
+    A.EXAM_DOC_ID
+FROM TBCSPSAH001M A WHERE 1=1 AND APL_NO = #strAPL_NO#

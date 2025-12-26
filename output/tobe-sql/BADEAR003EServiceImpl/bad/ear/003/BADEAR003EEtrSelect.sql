@@ -1,0 +1,17 @@
+SELECT D1.ADT_YR AS ADT_YR /* 감사년도 */,
+    D1.ADT_NO AS ADT_NO /* 감사번호 */,
+    D1.DSPS_RQT_SQNO AS DSPS_RQT_SQNO /* 처분요구순번 */,
+    D1.EXTT_ID AS EXTT_ID /* 적출자아이디 */,
+    D1.EXTT_OGDP_SECD AS EXTT_OGDP_SECD /* 적출자소속구분코드 */,
+    D1.EXTT_JBGD_SECD AS EXTT_JBGD_SECD /* 적출자직급구분코드 */,
+    D1.EXTT_NM AS EXTT_NM /* 적출자명 */,
+    F_DPT_INFO(D1.EXTT_OGDP_SECD,'1') AS F_DPT_INFO /* 적출자소속명 */,
+    F_CODE_NM('1000173',D1.EXTT_JBGD_SECD) AS F_CODE_NM /* 적출자직급명 */,
+    D1.CTB_RT AS CTB_RT /* 기여비율 */,
+    D1.PNRT_PRSRV_AMT AS PNRT_PRSRV_AMT /* 추징회수보전금액 */,
+    D1.IJS_AMT AS IJS_AMT /* 부당금액 */,
+    D1.NOP_RT AS NOP_RT /* 인원비율 */,
+    D1.EXTT_RVW_OPNN_CN AS EXTT_RVW_OPNN_CN /* 적출자검토의견내용 */,
+    F_DPT_INFO( F_USR_INFO(D1.EXTT_ID, '5'),'1') AS SLCT_OGDP_NM /* 청탁소속명 */,
+    F_CODE_NM('1000173',F_USR_INFO(D1.EXTT_ID, '3')) AS JBGD_NM /* 직급명 */
+FROM TB_BADEAR004M D1 WHERE 1=1 AND D1.ADT_YR = #CVLCPT_ADT_YR# AND D1.ADT_NO = #ADT_NO# AND D1.DSPS_RQT_SQNO = #DSPS_RQT_SQNO# ORDER BY D1.EXTT_ID

@@ -1,0 +1,2 @@
+select count(*) AS READ_CNT /* READ_CNT */
+from TB_BADEAR001M a, TB_BADEAR002D b where A.ADT_YR = B.ADT_YR and A.ADT_NO = B.ADT_NO and A.DSPS_RQT_SQNO = B.DSPS_RQT_SQNO and B.ENFC_YMD between #strStartFromDt#||'01' and #strStartToDt#||'31' and B.CFMTN_STTS_SECD != '0' and A.DSPS_RQT_KDCD <= '730'

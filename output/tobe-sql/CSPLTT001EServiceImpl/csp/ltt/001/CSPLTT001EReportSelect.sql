@@ -1,0 +1,16 @@
+SELECT A.NTFCTN_RCPT_SQNO /* 통보접수순번 */,
+    A.RSCH_ASMT_TTL /* 연구과제제목 */,
+    A.USER_NM /* 사용자명 */,
+    TO_CHAR(TO_DATE(A.SBMSN_YMD),'YYYY-MM-DD') AS SBMSN_YMD /* 제출일자 */,
+    TO_CHAR(TO_DATE(A.RLS_YMD),'YYYY-MM-DD') AS RLS_YMD /* 공개일자 */,
+    F_CODE_NM('1000075', A.PRGRS_STTS_SECD) AS PRGRS_STTS_SECD /* 진행상태구분코드 */
+FROM ( SELECT DECODE(A.NTFCTN_RCPT_SQNO,NULL,'',A.TK_YE||'-'||A.NTFCTN_RCPT_SQNO) AS NTFCTN_RCPT_SQNO /* 통보접수순번 */,
+    A.RSCH_ASMT_TTL /* 연구과제제목 */,
+    F_USR_INFO(A.TRGT_NOP_ENO,'2') AS USER_NM /* 사용자명 */,
+    A.TRGT_NOP_ENO /* 대상인원직원전산번호 */,
+    A.SBMSN_YMD /* 제출일자 */,
+    A.PRGRS_STTS_SECD /* 진행상태구분코드 */,
+    A.TK_YE /* 생각연도 */,
+    A.TK_SLN /* 생각연번 */,
+    A.NTFCTN_RCPT_SQNO /* 통보접수순번 */
+FROM TBCSPLTT001M A /*함께생각합시다 기본*/ WHERE 1=1 AND A.TRGT_NOP_ENO = #TRGT_NOP_ENO# AND A.PRGRS_STTS_SECD = #PRGRS_STTS_SECD# AND A.SBMSN_YMD &gt;= #strSMT_DTS# AND A.SBMSN_YMD &lt;= #strSMT_DTE# AND A.RSCH_ASMT_TTL LIKE '%'||#strTIT_NM#||'%' ) A ORDER BY TO_NUMBER(A.TK_YE) DESC, TO_NUMBER(A.TK_SLN) DESC

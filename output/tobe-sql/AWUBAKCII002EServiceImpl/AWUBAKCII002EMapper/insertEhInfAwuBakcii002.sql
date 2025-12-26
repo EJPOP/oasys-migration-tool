@@ -1,0 +1,1 @@
+INSERT INTO EH_INF_AWU_BAKCII002 (LINK_SQNO, CLM_LINK_TRRC_SECD, BLL_LINK_SECD, FRS_MDM_SQNO, SDL_DH, SDL_TM, SDL_NM, SDL_PLC, FRST_REG_DT, LAST_MDFCN_DT) VALUES( #{ifSeq}, 'SND', #{conDvsnCd}, #{srno}, #{sdlDh}, #{sdlTm}, #{sdlNm}, #{sdlPlc}, #{frtRegiDh}, #{fnlMdfDh} )

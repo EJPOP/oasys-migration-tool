@@ -1,0 +1,1 @@
+/* csp.ltt.service.impl.CSPLTT006EServiceImpl.CSPLTT006ECommentHideUpdate */ UPDATE TBCSPLTT004M SET DEL_YN = 'Y' /* 삭제여부 */, DEL_RSN = #DEL_RSN# , LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */WHERE TK_YE = #TK_YE# AND TK_SLN = #TK_SLN# AND CMMT_SEQ = #CMMT_SEQ#

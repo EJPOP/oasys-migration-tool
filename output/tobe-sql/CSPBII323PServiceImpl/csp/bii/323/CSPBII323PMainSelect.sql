@@ -1,0 +1,10 @@
+SELECT T1.CRU_RRNO_SCRTY /* 부패주민등록번호보안 */,
+    T1.DBT_PSN_DVSN_CD,
+    T1.TYP_DVSN_CD,
+    T1.TPOF_OGDP_INST_NM /* 제보소속기관명 */,
+    T1.BLT_PST_NM,
+    T1.SMM_TXT,
+    T1.DSGN_YMD /* 지정일자 */,
+    T1.PIC_ENO /* 담당자직원전산번호 */,
+    F_USR_INFO(T1.PIC_ENO,'2') AS PIC_NM /* 담당자명 */
+FROM TBCSPBII380M T1 WHERE T1.CRU_RRNO_SCRTY = #CRU_RRNO_SCRTY#

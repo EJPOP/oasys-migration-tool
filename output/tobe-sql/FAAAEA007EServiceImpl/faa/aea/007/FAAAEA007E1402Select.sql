@@ -1,0 +1,16 @@
+SELECT T3.INST_CD /* 기관코드 */,
+    T3.CVLCPT_ADT_YR /* 민원감사년도 */,
+    T3.ADT_SQNO /* 감사순번 */,
+    T3.EPFC_MNG_SQNO /* 사후관리순번 */,
+    T3.FRS_MDM_SQNO /* 포렌식매체순번 */,
+    T1.ADT_MTTR_CN||'('||T1.ADT_KND_NM||')' AS ADT_MTTR_CN /* 감사사항내용 */,
+    T1.ADT_BGNG_YMD||' ~ '||T1.ADT_END_YMD||'('||T1.ADT_DCN||')' AS ADT_YMD /* 감사일자 */,
+    T3.DSPS_RQT_YMD AS DSPS_RQT_YMD /* 처분요구일자 */,
+    T2.EPFC_MNG_NM || '(' || T3.DSPS_RQT_KND_CVN || ')' AS EPFC_MNG_NM /* 사후관리명 */,
+    F_ORG_INFO(T3.REL_INST_CD,'1') || '(' || T3.ACT_TTM_DEPT_NM || ')' AS REL_INST_CD /* 관계기관코드 */,
+    T3.RLPR_NM || '(' || TRIM(T3.DSPS_RQT_TRPR_BRDT) || ')' AS RLPR_NM /* 관계자명 */,
+    T3.DSPS_RQT_AMT AS DSPS_RQT_AMT /* 처분요구금액 */,
+    T3.IMPL_YMD AS IMPL_YMD /* 집행일자 */,
+    T3.IMPL_KND_NM AS IMPL_KND_NM /* 집행종류명 */,
+    T3.ADT_RSLT_IMPL_CN AS ADT_RSLT_IMPL_CN /* 감사결과집행내용 */
+FROM TBFAAAEA019M T1 ,TBFAAAEA020L T2 ,TBFAAAEA021M T3 WHERE T1.INST_CD = T2.INST_CD AND T1.CVLCPT_ADT_YR = T2.CVLCPT_ADT_YR AND T1.ADT_SQNO = T2.ADT_SQNO AND T2.INST_CD = T3.INST_CD AND T2.CVLCPT_ADT_YR = T3.CVLCPT_ADT_YR AND T2.ADT_SQNO = T3.ADT_SQNO AND T2.EPFC_MNG_SQNO = T3.EPFC_MNG_SQNO AND T1.DEL_YN = 'N' AND T2.DEL_YN = 'N' AND T3.DEL_YN = 'N' AND T1.INST_CD = #INST_CD# AND T1.CVLCPT_ADT_YR BETWEEN #strAudYrStr# AND #strAudYrEnd# AND T2.EPFC_MNG_NM LIKE '%' || #strExpotMngTitNm# || '%' AND T3.DSPS_RQT_KND_CVN LIKE '%' || #strDspRqKndNm# || '%' AND T3.RLPR_NM LIKE '%' || #strRelPenNm# || '%'

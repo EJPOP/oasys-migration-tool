@@ -1,0 +1,3 @@
+SELECT APC_DT,
+    BBS_CN /* 게시판내용 */
+FROM TBCSPSAE135B

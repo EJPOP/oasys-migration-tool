@@ -1,0 +1,8 @@
+SELECT A.LINK_YR /* 연계년도 */,
+    A.CRS_CD,
+    A.CRS_CDN /* 과정기수 */,
+    A.PFSR_ID,
+    B.INFO_RLPR_NM /* 정보관계자명 */,
+    /*강사명*/ A.#N/A AS #N/A /* 문서아이디2 */,
+    /*문서ID*/ (SELECT AS ENAIS_ATCH_FILE_NM /* ENAIS첨부파일명 */
+FROM ECM_FILE_LIST_VIEW2 g WHERE a.DOC_ID_2 = g.DOC_ID AND G.FILE_ID IS NOT NULL AND ROWNUM = 1) AS FILE_NAME, /*교재제목*/ a.KEYW1_TXT, /*키워드1*/ a.KEYW2_TXT, /*키워드2*/ a.KEYW3_TXT, /*키워드3*/ a.SUBJ_CD, /*교과목코드*/ c.SUBJ_NM, /*교과목명*/ d.EDU_DVSN_CD, /*교육구분코드*/ d.EDU_CAT_CD, /*교육분류코드*/ d.CRS_NM, /*교육과정명*/ (SUBSTR(e.EDU_STR_DT, 0, 4)||'-'||SUBSTR(e.EDU_STR_DT, 5, 2)||'-'||SUBSTR(e.EDU_STR_DT, 7, 2)||' ~ '|| SUBSTR(e.EDU_END_DT, 0, 4)||'-'||SUBSTR(e.EDU_END_DT, 5, 2)||'-'||SUBSTR(e.EDU_END_DT, 7, 2)) AS EDU_DT /*교육기간*/ FROM TBCSPSAE101D a, TBCSPSAE109M b, TBCSPSAE101M c, TBCSPSAE103C d, TBCSPSAE201D e, ECM_FILE_LIST_VIEW2 f WHERE 1=1 AND a.SUBJ_YN = 'Y' /*과목여부*/ AND d.USE_YN = 'Y' /*교육구분,분류코드 사용여부*/ AND a.DOC_ID_2 IS NOT NULL AND a.PFSR_ID = b.PFSR_ID AND a.SUBJ_CD = c.SUBJ_CD AND a.CRS_CD = d.CRS_CD AND a.YR = e.YR AND a.CRS_CDN = e.CRS_CDN AND a.CRS_CD = e.CRS_CD AND a.DOC_ID_2 = f.DOC_ID AND f.FILE_NAME IS NOT NULL AND a.YR = #strYR_CD# AND D.EDU_DVSN_CD = #strEDU_DVSN_CD# AND D.EDU_CAT_CD = #strEDU_CAT_CD# AND A.CRS_CD = #strEDU_CRS_CD# AND A.CRS_CDN = #CRS_CDN# AND UPPER(B.INFO_RLPR_NM) LIKE '%' || UPPER(#strNAM#) || '%' AND (UPPER(A.KEYW1_TXT) LIKE '%' || UPPER(#strKEYW_TXT#) || '%' OR UPPER(A.KEYW2_TXT) LIKE '%' || UPPER(#strKEYW_TXT#) || '%' OR UPPER(A.KEYW3_TXT) LIKE '%' || UPPER(#strKEYW_TXT#) || '%') ORDER BY A.LINK_YR , A.CRS_CD, A.CRS_CDN

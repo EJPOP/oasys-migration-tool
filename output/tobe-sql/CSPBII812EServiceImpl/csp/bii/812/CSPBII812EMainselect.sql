@@ -1,0 +1,10 @@
+SELECT A.MTRL_KND_CD /* 자료종류코드 */,
+    SUBSTR(A.INF_NO, 1, 4) AS SUBSTR /* 정보번호-연도 */,
+    SUBSTR(A.INF_NO, 6, 5) AS SUBSTR /* 정보번호-일련번호 */,
+    CASE WHEN A.MTRL_KND_CD = '2' THEN A.INF_NO ELSE NULL END AS MTRL_KND_CD /* 정보번호 */,
+    A.MTRL_NM /* 자료명 */,
+    A.JRSD_MAO_SECD /* 소관부처구분코드 */,
+    (SELECT B.PROF_RBPRSN_INST_NM AS PROF_RBPRSN_INST_NM /* 증명책임자기관명 */
+FROM TBDCMACM015M B WHERE B.INST_CD = A.JRSD_MAO_SECD) AS COPT_GD_NM /* 소관부처명 */ , A.RLS_YN /* 공개여부 */ , A.ACQR_ORG_CD /* 입수기관코드 */ , (SELECT B.PROF_RBPRSN_INST_NM /* 증명책임자기관명 */
+FROM TBDCMACM015M B WHERE B.INST_CD = A.ACQR_ORG_CD) AS ACQR_ORG_NM /* 입수기관명 */ , A.ACQR_DIV_NM /* 입수과명 */ , A.ETRT_STAD_DT /* 추출기준일 */ , A.ETRT_TG_PRD_TXT /* 추출대상기간내용 */ , A.ETRT_NOC /* 추출건수 */ , A.ETRT_CLU_TXT /* 추출항목내용 */ , (SELECT B.CVLCPT_DOC_ID /* 민원문서아이디 */
+FROM TBCSPBII801L B WHERE B.INFO_YR = A.INFO_YR AND B.FRS_MDM_SQNO = A.FRS_MDM_SQNO AND B.ADT_PLAN_DOC_TPCD = 'SP-II-005') AS SMP_DOC_ID /* 샘플파일문서번호 */ , A.INFO_YR /* 연도 */ , A.FRS_MDM_SQNO /* 일련번호 */ FROM TBCSPBII800L A /* 주요자료내역 */ WHERE A.INFO_YR = #INFO_YR# AND A.FRS_MDM_SQNO = #FRS_MDM_SQNO#

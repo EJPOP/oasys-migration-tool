@@ -1,0 +1,1 @@
+UPDATE TBCSPIIT022M SET ADT_NO = #ADT_NO# /* 감사번호 */,  CVLCPT_ADT_YR = #CVLCPT_ADT_YR# /* 민원감사년도 */,  DSPS_RQT_KDCD = #DSPS_RQT_KDCD# /* 처분요구종류코드 */,  DSPS_RQT_ENFC_YMD = #DSPS_RQT_ENFC_YMD# /* 처분요구시행일자 */,  DSPS_RQT_NM = #DSPS_RQT_NM# /* 처분요구명 */WHERE ACMP_SNO = #ACMP_SNO#

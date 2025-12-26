@@ -1,0 +1,12 @@
+SELECT A.CVLCPT_STP_SECD AS CVLCPT_STP_SECD /* 민원단계구분코드 */,
+    NVL(B.SLCT_STP_SE_CDNM,'') AS ADT_STP_NM /* 감사단계명 */,
+    A.SLCT_RPTP_NM /* 청탁보고서명 */,
+    A.SLCT_RPTP_KDCD /* 청탁보고서종류코드 */,
+    A.SLCT_ATRZ_DMND_ID /* 청탁결재요청아이디 */,
+    A.CVLCPT_RCPT_YR AS CVLCPT_RCPT_YR /* 민원접수년도 */,
+    A.CVLCPT_RCPT_RCPT AS CVLCPT_RCPT_RCPT /* 민원접수번호 */,
+    A.CVLCPT_DOC_ID /* 민원문서아이디 */,
+    A.SLCT_ATRZ_STTS_SECD /* 청탁결재상태구분코드 */,
+    A.CVLCPT_CLM_SECD /* 민원청구구분코드 */,
+    F_OPEN_EDIT(A.SLCT_LNKG_URL_NM) AS F_OPEN_EDIT
+FROM TB_DCPDCP603M A LEFT OUTER JOIN TB_DCPDCP601M B ON A.CVLCPT_RCPT_YR = B.CVLCPT_RCPT_YR AND A.CVLCPT_CLM_SECD = B.CVLCPT_CLM_SECD AND A.CVLCPT_RCPT_RCPT = B.CVLCPT_RCPT_RCPT AND A.CVLCPT_STP_SECD = B.CVLCPT_STP_SECD WHERE 1=1 AND A.SLCT_ATRZ_DMND_ID IS NULL (#docInfoList[].audYr#,#docInfoList[].reqDvsnCd#,#docInfoList[].audNo#,#docInfoList[].audStepCd#,#docInfoList[].docId#)

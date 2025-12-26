@@ -1,0 +1,6 @@
+/* faa/cav/036/FAACAV036ExtlSelect */ SELECT ROWNUM,
+    OTSD_SECD AS OTSD_SECD /* 외부구분코드 */,
+    OTSD_CD AS OTSD_CD /* 외부코드 */,
+    OTSD_CDNM AS OTSD_CDNM /* 외부코드명 */,
+    OTSD_CD_RMRK_CN /* 외부코드비고내용 */
+FROM TWFAACAV023C WHERE 1=1 AND OTSD_SECD = #OTSD_SECD# AND OTSD_CD &gt;= #startSgCd# ORDER BY ACNTG_CD

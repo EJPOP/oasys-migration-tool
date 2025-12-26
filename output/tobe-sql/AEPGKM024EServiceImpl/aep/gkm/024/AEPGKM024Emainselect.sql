@@ -1,0 +1,34 @@
+SELECT A.SC_GRN_TG_CD /* 점수부여대상코드 */,
+    A.KLD_ACTV_NM /* 지식활동명 */,
+    A.KLD_ACTV_SMM_NM /* 지식활동요약명 */,
+    A.EVL_CHGR_DVSN_CD /* 평가담당자구분코드 */,
+    F_CODE_NM('1000589', A.EVL_CHGR_DVSN_CD) AS F_CODE_NM /* 평가담당자구분명 (대상자) */,
+    A.SET_DVSN_CD /* 설정구분코드 */,
+    F_CODE_NM('1000356', A.SET_DVSN_CD) AS F_CODE_NM /* 점수부여대상설정명 */,
+    A.BSC_SC /* 기본점수 */,
+    A.MIN_SC /* 최소점수 */,
+    A.MAX_SC /* 최대점수 */,
+    A.ADD_SC /* 가산점수 */,
+    A.RFC_BND_SC /* 반영한도점수 */,
+    CASE WHEN A.SET_DVSN_CD = 'C' THEN A.MIN_SC || '~' || A.MAX_SC ELSE '-' END AS SET_DVSN_CD /* 평가단평가점수 */,
+    CASE WHEN A.EVL_SC_DVSN_CD = '3' THEN TO_CHAR(A.BSC_SC) WHEN A.EVL_SC_DVSN_CD = '2' THEN (A.MIN_SC + A.BSC_SC) || '~' || (TO_NUMBER(A.MAX_SC) + TO_NUMBER(A.BSC_SC) + TO_NUMBER(A.ADD_SC)) ELSE (A.MIN_SC + A.BSC_SC) || '~' || (TO_NUMBER(A.MAX_SC) + TO_NUMBER(A.BSC_SC)) || '(' || (TO_NUMBER(A.MIN_SC) + TO_NUMBER(A.BSC_SC)) || '~' || (TO_NUMBER(A.MAX_SC) + TO_NUMBER(A.BSC_SC) + TO_NUMBER(A.ADD_SC)) || ')' END AS EVL_SC_DVSN_CD /* 평가단평가점수+가산점수+기본점수 */,
+    A.USE_YN /* 사용여부 */,
+    A.EVL_SC_DVSN_CD /* 평가점수구분코드 */,
+    F_CODE_NM('1000588', A.EVL_SC_DVSN_CD) AS F_CODE_NM /* 평가점수항목명 */,
+    B.SET_ID /* 설정ID */,
+    B.SET_NM /* 설정명 */,
+    NVL(C.CFMTN_YN, 'N') AS CFMTN_YN /* 확정여부 */,
+    NVL(D.COUNT, 0) AS 0
+FROM TBAEPGKM006M AS A /* 점수부여대상기본T */ ,( SELECT A.SC_GRN_TG_CD,
+    SUBSTR(REPLACE(REPLACE(EXTRACT(XMLAGG(XMLELEMENT(ID, ',' || B.BOARD_ID)), '/ID').GETSTRINGVAL(), ' ', ''), ' ', ''), 2) AS SUBSTR,
+    SUBSTR(REPLACE(REPLACE(EXTRACT(XMLAGG(XMLELEMENT(NM, ',' || B.BOARD_TITLE)), '/NM').GETSTRINGVAL(), ' ', ''), ' ', ''), 2) AS SUBSTR,
+    'B' AS SET_DVSN_CD
+FROM TBAEPGKM007L AS A /* 점수부여대상설정내역T */ ,CTT_BULLETIN_BOARD AS B /* 포탈게시판T */ WHERE A.SET_ID = B.BOARD_ID GROUP BY A.SC_GRN_TG_CD UNION SELECT A.SC_GRN_TG_CD,
+    SUBSTR(REPLACE(REPLACE(EXTRACT(XMLAGG(XMLELEMENT(ID, ',' || B.TG_CAT_ID)), '/ID').GETSTRINGVAL(), ' ', ''), ' ', ''), 2) AS SUBSTR,
+    SUBSTR(REPLACE(REPLACE(EXTRACT(XMLAGG(XMLELEMENT(NM, ',' || B.TG_CAT_NM)), '/NM').GETSTRINGVAL(), ' ', ''), ' ', ''), 2) AS SUBSTR,
+    'C' AS SET_DVSN_CD
+FROM TBAEPGKM007L AS A /* 점수부여대상설정내역T */ ,TBAEPGKM017M AS B /* 대상분류기본T */ WHERE A.SET_ID = B.TG_CAT_ID GROUP BY A.SC_GRN_TG_CD) AS B ,( SELECT B.SC_GRN_TG_CD,
+    'Y' AS CFMTN_YN /* 확정여부 */
+FROM TBAEPGKM011M AS A /* 평가기간기본T */ ,TBAEPGKM012L AS B /* 평가기간별점수부여대상내역T */ WHERE A.EVL_YR = B.EVL_YR AND A.EVL_DVSN_CD = B.EVL_DVSN_CD GROUP BY B.SC_GRN_TG_CD) AS C ,( SELECT SC_GRN_TG_CD,
+    NVL(COUNT(1), 0) AS 1 /* 점수부여대상별 지식평가내역 수 */
+FROM TBAEPGKM016L /* 지식평가내역T */ GROUP BY SC_GRN_TG_CD) AS D WHERE A.SC_GRN_TG_CD = B.SC_GRN_TG_CD(+) AND A.SET_DVSN_CD = B.SET_DVSN_CD(+) AND A.SC_GRN_TG_CD = C.SC_GRN_TG_CD(+) AND A.SC_GRN_TG_CD = D.SC_GRN_TG_CD(+) A.USE_YN = #USE_YN# ORDER BY A.SC_GRN_TG_CD

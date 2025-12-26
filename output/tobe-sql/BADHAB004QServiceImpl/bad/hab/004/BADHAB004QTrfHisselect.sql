@@ -1,0 +1,25 @@
+SELECT LINK_YR /* 연계년도 */,
+    CVLCPT_TASK_SECD /* 민원업무구분코드 */,
+    F_CODE_NM ('1000406', CVLCPT_TASK_SECD) AS F_CODE_NM /* 업무구분 */,
+    GRNDS_EXMN_AEX_SQNO /* 현장조사수용비순번 */,
+    CMPTN_YN /* 완료여부 */,
+    REF_YR /* 참조연도 */,
+    REF_SRNO /* 참조일련번호 */,
+    REF_DPT_CD /* 참조부서코드 */,
+    F_DPT_INFO(REF_DPT_CD, '1') AS F_DPT_INFO /* 참조부서 */,
+    RFRNC_INST_CD /* 참조기관코드 */,
+    F_ORG_INFO(RFRNC_INST_CD, '1') AS F_ORG_INFO /* 참조기관 */,
+    REF_DVSN_CD /* 참조구분코드 */,
+    TRF_BEF_CHR_DPT_CD /* 이관전담당부서코드 */,
+    F_DPT_INFO(TRF_BEF_CHR_DPT_CD, '1') AS F_DPT_INFO /* 이관전담당부서 */,
+    TRF_AF_CHR_DPT_CD /* 이관이후담당부서코드 */,
+    F_DPT_INFO(TRF_AF_CHR_DPT_CD, '1') AS F_DPT_INFO /* 이관후담당부서 */,
+    TRF_DT /* 이관일 */,
+    TRF_TXT /* 이관내용 */,
+    HNDL_CHGR_CNB /* 처리담당자전산번호 */,
+    F_USR_INFO(HNDL_CHGR_CNB, '2') AS SRECS_PRCS_PIC_NM /* 심사재심의처리담당자명 */,
+    RSCH_ASMT_TTL /* 연구과제제목 */,
+    CASE WHEN TRF_AF_CHR_DPT_CD IN (SELECT AS SRECS_DEPT_CD /* 심사재심의부서코드 */
+FROM TABLE(F_AUTH_DEPT(#strCnb#, #strDptAuth#, '', #strDptCd#))) AND TRF_AF_CHR_DPT_CD = NVL(#strDptCd2#, TRF_AF_CHR_DPT_CD) THEN 'Y' ELSE 'N' END AS MYSELF_YN FROM TBBADHAB002H WHERE CMPTN_YN = 'Y' AND (TRF_AF_CHR_DPT_CD IN (SELECT SRECS_DEPT_CD /* 심사재심의부서코드 */
+FROM TABLE(F_AUTH_DEPT(#strCnb#, #strDptAuth#, '', #strDptCd#))) OR TRF_BEF_CHR_DPT_CD IN (SELECT SRECS_DEPT_CD /* 심사재심의부서코드 */
+FROM TABLE(F_AUTH_DEPT(#strCnb#, #strDptAuth#, '', #strDptCd#)))) AND LINK_YR = #LINK_YR# AND (TRF_AF_CHR_DPT_CD = #strDptCd2# OR TRF_BEF_CHR_DPT_CD = #strDptCd2#) AND CVLCPT_TASK_SECD = #CVLCPT_TASK_SECD# ORDER BY CVLCPT_TASK_SECD, GRNDS_EXMN_AEX_SQNO DESC

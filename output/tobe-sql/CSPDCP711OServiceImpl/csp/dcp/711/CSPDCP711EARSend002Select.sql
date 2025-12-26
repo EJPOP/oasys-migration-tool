@@ -1,0 +1,14 @@
+SELECT A.CVLCPT_CLM_SECD /* 민원청구구분코드 */,
+    A.TPOF_RCPT_YR /* 제보접수년도 */,
+    A.TPOF_RCPT_NO /* 제보접수번호 */,
+    TO_CHAR(SYSDATE,'YYYY-MM-DD') AS GPCD_PRCS_YMD /* 처리일자 */,
+    #FNL_DEAL_DPT_CD# AS ETC_LBSVC_MNG_DEPT_CD /* 기타용역관리부서코드 */,
+    F_DPT_INFO(#FNL_DEAL_DPT_CD#,'1') AS PRCS_DEPT_NM /* 처리부서명 */,
+    F_USR_INFO(#S_CNB#,'1') AS PRCS_PIC_ID /* 처리담당자아이디 */,
+    F_USR_INFO(#S_CNB#,'2') AS SRECS_PRCS_PIC_NM /* 심사재심의처리담당자명 */,
+    #HOME_STA_CD# AS CRU_PRCS_PRCS_STTS /* 부패처리상태구분코드 */,
+    #HOME_STA_NM# AS PRCS_NM /* 처리명 */,
+    '' AS ADT_RSLT_SECD /* 감사결과구분코드 */,
+    '' AS CLM_RSLT_NM /* 청구결과명 */,
+    #DVSN_CD# AS USER_HSTRY_SECD /* 사용자이력구분코드 */
+FROM TB_CSPDCP101M A, TB_CSPEAR001M B WHERE A.CVLCPT_CLM_SECD = B.CLM_SECD AND A.TPOF_RCPT_YR = B.CLM_YR AND A.TPOF_RCPT_NO = B.CLM_RCPT_NO AND A.CVLCPT_CLM_SECD = #CLM_SECD# AND A.TPOF_RCPT_YR = #CVLCPT_RCPT_YR# AND A.TPOF_RCPT_NO = #CVLCPT_RCPT_RCPT#

@@ -1,0 +1,7 @@
+SELECT A.SUBJ_CD,
+    A.BLL_SBJCT_NM /* 계산서과목명 */,
+    '' AS PFSR_ID,
+    '' AS INFO_RLPR_NM /* 정보관계자명 */,
+    '' AS VLD_DVSN_NM,
+    '' AS LCT_DT
+FROM TBCSPSAE101M A WHERE A.USE_YN = 'Y' AND A.BSC_OP_SUBJ_YN = 'Y' AND UPPER(A.BLL_SBJCT_NM) LIKE '%' || UPPER(#strSUBJ_NM#) || '%' ORDER BY A.BLL_SBJCT_NM

@@ -1,0 +1,9 @@
+/* AWUSYMBBM003EMapper.findPopupList 팝업 리스트 조회 */ SELECT PP_ID,
+    PP_TIT,
+    TO_CHAR(TO_DATE(BGNG_YMD, 'YYYYMMDD'), 'YYYY-MM-DD') || ' ~ ' || TO_CHAR(TO_DATE(END_YMD, 'YYYYMMDD'), 'YYYY-MM-DD') AS TO_CHAR,
+    SYS_DVSN_CD,
+    '좌 : ' || PP_LFT_SEAT || 'px , 탑 : ' || PP_TOP_SEAT || 'px' AS PP_LFT_SEAT,
+    PP_WDTH || 'px X ' || PP_HGT || 'px' AS PP_WDTH,
+    POST_END_SET_YN,
+    POST_END_DCN
+FROM TBAWUSYMCPM001M WHERE 1=1 AND PP_TIT LIKE '%'||#{ppTit}||'%' AND STR_DT >= REPLACE(#{strDt}, '-' , NULL) AND END_YMD AND SYS_DVSN_CD = #{sysDvsnCd} ORDER BY PP_ID DESC

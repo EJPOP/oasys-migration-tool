@@ -1,0 +1,1 @@
+update tbdcmacm022l set SBM_CNB = #chrCnb# where ATRZ_DOC_NO = #ATRZ_DOC_NO# and TPOF_ATRZ_SECD = #TPOF_ATRZ_SECD#

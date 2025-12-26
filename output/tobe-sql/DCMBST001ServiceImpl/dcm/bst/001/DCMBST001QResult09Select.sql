@@ -1,0 +1,5 @@
+SELECT NVL(STTC_NM_4,0) AS STTC_NM_4,
+    /*민원 신규접수*/ NVL(STTC_NM_5,0) + NVL(STTC_NM_11,0) AS STTC_NM_5,
+    /*민원 처리완료*/ NVL(STTC_NM_13,0) + NVL(STTC_NM_14,0) AS STTC_NM_13,
+    /*민원 미처리 미처리*/ NVL(STTC_NM_14,0) AS STTC_NM_14 /* 민원 미처리 기한경과 */
+FROM TBDCMBST002M T2 WHERE STATS_YR = #STATS_YR# AND STTC_MN = #strMn# AND STTC_WEK_NO = #strWekNo# AND STTC_DVSN_CD = #strSttcDvsnCd# AND STTC_SNO = 3

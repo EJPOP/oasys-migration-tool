@@ -1,0 +1,4 @@
+SELECT /* CSPAOECommonDeptCdselect */ F_DPT_INFO(SRECS_DEPT_CD, '1') AS DEPT_NM /* 부서명 */,
+    SRECS_DEPT_CD AS SRECS_DEPT_CD /* 심사재심의부서코드 */,
+    #N/A /* 부서코드1 */
+FROM TBCSPAOE035M WHERE 1=1 AND TSK_DVSN_CD IN ('10000','10001') /*150708_kmh추가_감사지원,감사외*/ GROUP BY DPT_CD_1, DPT_CD

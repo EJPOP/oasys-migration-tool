@@ -1,0 +1,2 @@
+/* * 당일현금 : 당일 BS의 현금계정 */ SELECT SUM(DSPS_RQT_AMT) AS DSPS_RQT_AMT /* 처분요구금액 */
+FROM TBCSPNBK502M WHERE MNST_CLU_CD = '110102' AND DEAL_DT = #closingDt#

@@ -1,0 +1,9 @@
+SELECT D1.TPOF_HMPG_APLY_NO /* 제보누리집신청번호 */,
+    D1.TPOF_RCPT_YR /* 제보접수년도 */,
+    D1.TPOF_ACTL_RCPT_NO /* 제보실제접수번호 */,
+    D1.TPOF_STTS_SECD /* 제보상태구분코드 */,
+    '취하' AS E_RECV_NM,
+    TO_CHAR(D1.LAST_MDFCN_DT, 'YYYYMMDDHH24MISS') AS TO_CHAR,
+    '귀하께서 제출하신 감사요청사항을 취하하여 감사요청사항의 처리에 관한 규정 제14조제3항에 따라 회신하지 않습니다.' AS E_ANS_CN,
+    TO_CHAR(SYSDATE, 'YYYYMMDD') AS TO_CHAR
+FROM TB_CSPDCP101M D1 WHERE D1.CVLCPT_CLM_SECD = #CLM_SECD# AND D1.TPOF_RCPT_YR = #CVLCPT_RCPT_YR# AND D1.TPOF_RCPT_NO = #CVLCPT_RCPT_RCPT#

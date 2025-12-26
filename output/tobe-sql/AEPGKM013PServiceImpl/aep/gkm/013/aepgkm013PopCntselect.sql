@@ -1,0 +1,6 @@
+SELECT CVLCPT_ADT_YR AS CVLCPT_ADT_YR /* 민원감사년도 */,
+    ADT_NO AS ADT_NO /* 감사번호 */,
+    ADT_MTTR_NM AS ADT_MTTR_NM /* 감사사항명 */,
+    ADT_KDCD AS ADT_KDCD /* 감사종류코드 */,
+    TO_CHAR(COUNT(1) OVER()) AS TO_CHAR
+FROM TB_BADDED001M WHERE 1=1 ADT_MTTR_NM LIKE '%' || #strAudSbjNm# || '%'

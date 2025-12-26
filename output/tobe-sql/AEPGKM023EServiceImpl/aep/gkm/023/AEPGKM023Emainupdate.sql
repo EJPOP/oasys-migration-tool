@@ -1,0 +1,1 @@
+UPDATE TBAEPGKM008M SET EVL_CLU_NM = #EVL_CLU_NM#,  EVL_TXT = #EVL_TXT#,  MIN_SC = #MIN_SC#,  MAX_SC = #MAX_SC#,  USE_YN = #USE_YN# /* 사용여부 */,  LAST_USER_ID = #LAST_USER_ID# /* 최종사용자아이디 */,  LAST_PRCS_DEPT_CD = #LAST_PRCS_DEPT_CD# /* 최종처리부서코드 */,  LAST_MENU_ID = #LAST_MENU_ID# /* 최종메뉴아이디 */,  LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */WHERE EVL_CLU_CD = #EVL_CLU_CD#

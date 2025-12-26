@@ -1,0 +1,5 @@
+SELECT INST_CD /* 기관코드 */,
+    PROF_RBPRSN_INST_NM /* 증명책임자기관명 */,
+    INST_SECD /* 기관구분코드 */,
+    ORG_DGE_CD
+FROM TBDCMACM015M WHERE INST_CD = RPAD(#CUT_ORG_CD#, 12, '0') AND ORG_DGE_CD = '1' AND USE_DVSN_NO = 'Y'

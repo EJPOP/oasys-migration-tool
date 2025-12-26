@@ -1,0 +1,14 @@
+SELECT SITU.BZTRP_YR /* 출장년도 */,
+    /*출장년도*/ SITU.BZTRP_SQNO AS BZTRP_SQNO /* 출장순번 */,
+    /*출장순번*/ SITU.SPRT_NO AS SPRT_NO /* 지원번호 */,
+    /*지원번호*/ SITU.BZTRP_NM AS BZTRP_NM /* 출장명 */,
+    /*출장명*/ SITU.BZTRP_DEPT_CD AS BZTRP_DEPT_CD /* 출장부서코드 */,
+    /*주관국과코드 */ F_CODE_NM('1000021',SITU.GNRL_BZTRP_KDCD) AS F_CODE_NM,
+    /*일반출장명*/ DEPT.CNSTN_MBCMT_DEPT_NM AS CNSTN_MBCMT_DEPT_NM /* 자문위원부서명 */,
+    /*주관국과명*/ F_USR_INFO(SITU.BZTRP_TL_ENO,'2') AS F_USR_INFO,
+    /*선임자명*/ SITU.BZTRP_TL_ENO AS BZTRP_TL_ENO /* 출장반장직원전산번호 */,
+    /*선임자 직급*/ SITU.BZTRP_TL_JBGD_SECD AS BZTRP_TL_JBGD_SECD /* 출장반장직급구분코드 */,
+    /*선입자 직급코드*/ F_CODE_NM('1000173',SITU.BZTRP_TL_JBGD_SECD) AS F_CODE_NM,
+    /*선임자 직급명*/ SITU.BZTRP_TL_DEPT_CD AS BZTRP_TL_DEPT_CD /* 출장반장부서코드 */,
+    /*선임자 부서코드 */ F_DPT_INFO(SITU.BZTRP_TL_DEPT_CD,'4') AS F_DPT_INFO /* 선임자 부서명 */
+FROM TB_BADDED002M SITU, TBDCMACM002M DEPT WHERE 1 = 1 AND SITU.BZTRP_YR = #BZTRP_YR# AND SITU.BZTRP_SQNO = #BZTRP_SQNO# AND DEPT.SRECS_DEPT_CD(+) = SITU.BZTRP_DEPT_CD

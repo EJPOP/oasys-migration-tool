@@ -1,0 +1,17 @@
+SELECT IF_FILE_SEQ,
+    LINK_SQNO /* 연계순번 */,
+    LINK_TBL_NM /* 연계테이블명 */,
+    ENAIS_PST_ATCH_FILE_ID /* ENAIS게시물첨부파일아이디 */,
+    ATCH_FILE_IDNO /* 첨부파일식별번호 */,
+    FILE_STRE_COURS,
+    STRE_FILE_NM,
+    ORIGNL_FILE_NM,
+    FILE_EXTSN,
+    FILE_CN,
+    CRU_FILE_CPCT /* 부패파일용량 */,
+    IF_FILE_CASE,
+    IF_CD,
+    BIGO,
+    FRST_USER_ID /* 최초사용자아이디 */,
+    LINK_IDNO /* 연계식별번호 */
+FROM EH_INF_GR_AT_002 WHERE LINK_SQNO = #LINK_SQNO#

@@ -7,15 +7,73 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Collections;
 import java.util.List;
 
 public class AliasSqlResultXlsxWriter {
+
+    /* ===== CHANGED START ===== */
+    public static final class TobeSelectOutputRow {
+        public final String serviceClass;
+        public final String namespace;
+        public final String sqlId;
+        public final int seq;
+        public final String outputName;
+        public final String lowerCamel;
+        public final String expr;
+        public final String comment;
+
+        public TobeSelectOutputRow(String serviceClass, String namespace, String sqlId, int seq,
+                                   String outputName, String lowerCamel, String expr, String comment) {
+            this.serviceClass = serviceClass;
+            this.namespace = namespace;
+            this.sqlId = sqlId;
+            this.seq = seq;
+            this.outputName = outputName;
+            this.lowerCamel = lowerCamel;
+            this.expr = expr;
+            this.comment = comment;
+        }
+    }
+
+    public static final class TobeDmlParamRow {
+        public final String serviceClass;
+        public final String namespace;
+        public final String sqlId;
+        public final int seq;
+        public final String dmlType;
+        public final String paramName;
+        public final String lowerCamel;
+
+        public TobeDmlParamRow(String serviceClass, String namespace, String sqlId, int seq,
+                               String dmlType, String paramName, String lowerCamel) {
+            this.serviceClass = serviceClass;
+            this.namespace = namespace;
+            this.sqlId = sqlId;
+            this.seq = seq;
+            this.dmlType = dmlType;
+            this.paramName = paramName;
+            this.lowerCamel = lowerCamel;
+        }
+    }
+    /* ===== CHANGED END ===== */
 
     /**
      * 결과 XLSX를 스트리밍 방식으로 작성한다.
      * - autoSizeColumn()은 대량 데이터에서 병목/멈춤 원인이 될 수 있으므로 사용하지 않는다.
      */
     public void write(Path outputFile, List<AliasSqlResult> results) {
+        /* ===== CHANGED START ===== */
+        write(outputFile, results, Collections.emptyList(), Collections.emptyList());
+        /* ===== CHANGED END ===== */
+    }
+
+    /* ===== CHANGED START ===== */
+    public void write(Path outputFile,
+                      List<AliasSqlResult> results,
+                      List<TobeSelectOutputRow> tobeSelectOutputs,
+                      List<TobeDmlParamRow> tobeDmlParams) {
+        /* ===== CHANGED END ===== */
 
         try {
             if (outputFile.getParent() != null) {
@@ -59,6 +117,77 @@ public class AliasSqlResultXlsxWriter {
                 sheet.setColumnWidth(2, 60 * 256);  // namespace
                 sheet.setColumnWidth(3, 35 * 256);  // sqlId
                 sheet.setColumnWidth(4, 50 * 256);  // 사유
+
+                /* ===== CHANGED START ===== */
+                if (tobeSelectOutputs != null && !tobeSelectOutputs.isEmpty()) {
+                    Sheet s2 = wb.createSheet("tobe-select-outputs");
+
+                    Row h = s2.createRow(0);
+                    createCell(h, 0, "서비스클래스", headerStyle);
+                    createCell(h, 1, "Mapper Namespace", headerStyle);
+                    createCell(h, 2, "SQL ID", headerStyle);
+                    createCell(h, 3, "순번", headerStyle);
+                    createCell(h, 4, "출력명", headerStyle);
+                    createCell(h, 5, "lowerCamel", headerStyle);
+                    createCell(h, 6, "expr", headerStyle);
+                    createCell(h, 7, "comment", headerStyle);
+
+                    int r = 1;
+                    for (TobeSelectOutputRow x : tobeSelectOutputs) {
+                        Row row = s2.createRow(r++);
+                        createCell(row, 0, safe(x.serviceClass), bodyStyle);
+                        createCell(row, 1, safe(x.namespace), bodyStyle);
+                        createCell(row, 2, safe(x.sqlId), bodyStyle);
+                        createCell(row, 3, String.valueOf(x.seq), bodyStyle);
+                        createCell(row, 4, safe(x.outputName), bodyStyle);
+                        createCell(row, 5, safe(x.lowerCamel), bodyStyle);
+                        createCell(row, 6, safe(x.expr), bodyStyle);
+                        createCell(row, 7, safe(x.comment), bodyStyle);
+                    }
+
+                    s2.setColumnWidth(0, 50 * 256);
+                    s2.setColumnWidth(1, 60 * 256);
+                    s2.setColumnWidth(2, 35 * 256);
+                    s2.setColumnWidth(3, 8 * 256);
+                    s2.setColumnWidth(4, 35 * 256);
+                    s2.setColumnWidth(5, 35 * 256);
+                    s2.setColumnWidth(6, 90 * 256);
+                    s2.setColumnWidth(7, 50 * 256);
+                }
+
+                if (tobeDmlParams != null && !tobeDmlParams.isEmpty()) {
+                    Sheet s3 = wb.createSheet("tobe-dml-params");
+
+                    Row h = s3.createRow(0);
+                    createCell(h, 0, "서비스클래스", headerStyle);
+                    createCell(h, 1, "Mapper Namespace", headerStyle);
+                    createCell(h, 2, "SQL ID", headerStyle);
+                    createCell(h, 3, "순번", headerStyle);
+                    createCell(h, 4, "DML", headerStyle);
+                    createCell(h, 5, "paramName", headerStyle);
+                    createCell(h, 6, "lowerCamel", headerStyle);
+
+                    int r = 1;
+                    for (TobeDmlParamRow x : tobeDmlParams) {
+                        Row row = s3.createRow(r++);
+                        createCell(row, 0, safe(x.serviceClass), bodyStyle);
+                        createCell(row, 1, safe(x.namespace), bodyStyle);
+                        createCell(row, 2, safe(x.sqlId), bodyStyle);
+                        createCell(row, 3, String.valueOf(x.seq), bodyStyle);
+                        createCell(row, 4, safe(x.dmlType), bodyStyle);
+                        createCell(row, 5, safe(x.paramName), bodyStyle);
+                        createCell(row, 6, safe(x.lowerCamel), bodyStyle);
+                    }
+
+                    s3.setColumnWidth(0, 50 * 256);
+                    s3.setColumnWidth(1, 60 * 256);
+                    s3.setColumnWidth(2, 35 * 256);
+                    s3.setColumnWidth(3, 8 * 256);
+                    s3.setColumnWidth(4, 10 * 256);
+                    s3.setColumnWidth(5, 35 * 256);
+                    s3.setColumnWidth(6, 35 * 256);
+                }
+                /* ===== CHANGED END ===== */
 
                 try (OutputStream os = Files.newOutputStream(
                         outputFile,

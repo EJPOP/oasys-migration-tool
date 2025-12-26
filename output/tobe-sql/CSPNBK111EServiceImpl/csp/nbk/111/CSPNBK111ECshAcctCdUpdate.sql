@@ -1,0 +1,1 @@
+UPDATE /* CSPNBK111ECshAcctCdUpdate */ TBCSPNBK002M D1 SET MOUI_NO = #MOUI_NO# ,  USE_YN = #USE_YN# /* 사용여부 */,  RMRK_CN = #RMRK_CN# /* 비고내용 */,  LAST_USER_ID = #LAST_USER_ID# /* 최종사용자아이디 */,  LAST_PRCS_DEPT_CD = #LAST_PRCS_DEPT_CD# /* 최종처리부서코드 */,  LAST_MENU_ID = #LAST_MENU_ID# /* 최종메뉴아이디 */,  LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */WHERE D1.CSH_ACCT_CD = #CSH_ACCT_CD#

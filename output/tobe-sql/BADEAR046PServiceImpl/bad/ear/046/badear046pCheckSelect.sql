@@ -1,0 +1,3 @@
+SELECT *
+FROM TBDCMACM013C WHERE CMM_CD_DVSN_CD ='1000121' AND (CD LIKE '%'||#strCodeNm#||'%' OR CD_NM LIKE '%'||#strCodeNm#||'%') SELECT *
+FROM TBDCMACM013C WHERE CMM_CD_DVSN_CD ='1000120' AND (CD LIKE '%'||#strCodeNm#||'%' OR CD_NM LIKE '%'||#strCodeNm#||'%')

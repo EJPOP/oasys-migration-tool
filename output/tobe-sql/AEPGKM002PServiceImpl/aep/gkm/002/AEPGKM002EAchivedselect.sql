@@ -1,0 +1,7 @@
+SELECT TRGT_NOP_ENO /* 대상인원직원전산번호 */,
+    CTG_ID,
+    CTG_NM,
+    HIRK_CTG_ID,
+    CRU_SORT_SQNO /* 부패정렬순번 */,
+    SRT_VAL_NM
+FROM TBAEPGKM003L AS A WHERE TRGT_NOP_ENO = #TRGT_NOP_ENO# CTG_ID = #strCtgId# ORDER BY SRT_VAL_NM

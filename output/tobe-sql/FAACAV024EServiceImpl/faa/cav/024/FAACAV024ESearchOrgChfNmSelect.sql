@@ -1,0 +1,2 @@
+/* faa/cav/024/FAACAV024ESearchOrgChfNmSelect */ SELECT MAX(INFO_RLPR_NM) AS INFO_RLPR_NM /* 정보관계자명 */
+FROM TBFAAAEA015M WHERE INST_CD = #INST_CD#||#strOrgCd2#||#strOrgCd3#||#strOrgCd4# AND DEL_YN = 'N' AND FACP_SE_YN = 1

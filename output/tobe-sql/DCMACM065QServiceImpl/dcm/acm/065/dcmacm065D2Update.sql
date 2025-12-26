@@ -1,0 +1,1 @@
+UPDATE TBDCMACM065D2 SET SPRT_LTD = #strSprtLtd# /* 사용제한여부 */ WHERE LINK_YR = #LINK_YR#

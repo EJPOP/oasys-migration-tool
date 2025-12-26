@@ -1,0 +1,1 @@
+UPDATE TBCSPTSM001M SET ENAIS_PST_ATCH_FILE_ID = #{docId} /* ENAIS게시물첨부파일아이디 */WHERE FMDA_IDX = #{fmdaIdx}

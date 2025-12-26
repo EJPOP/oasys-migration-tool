@@ -1,0 +1,12 @@
+/* csp/acp/004/CSPACP004QExcelExportSelect */ SELECT ROWNUM,
+    AA.*
+FROM (SELECT /*CSPACP004QExcelExportSelect*/ GDS_RQS_SNO,
+    /*물품요청순번*/ TO_CHAR(TO_DATE(A.DMND_YMD),'YYYY-MM-DD') AS DMND_YMD /* 요청일자 */,
+    /*요청일자*/ D.CNSTN_MBCMT_DEPT_NM AS CNSTN_MBCMT_DEPT_NM /* 자문위원부서명 */,
+    /*요청자부서명*/ B.USER_NM AS USER_NM /* 사용자명 */,
+    /*요청자명*/ A.RQS_TIT_NM,
+    /*요청제목*/ C.USER_NM AS USER_NM /* 사용자명 */,
+    /*처리담당자명*/ TO_CHAR(TO_DATE(A.GPCD_PRCS_YMD),'YYYY-MM-DD') AS GPCD_PRCS_YMD /* 처리일자 */,
+    /*처리일자*/ A.PRCS_CN AS PRCS_CN /* 처리내용 */,
+    /*처리결과*/ A.DMND_CN AS DMND_CN /* 요청내용 */
+FROM TBCSPACP001M A, /*물품수리요청기본*/ TBDCMACM001M B, /*사용자테이블(요청자)*/ TBDCMACM001M C, /*사용자테이블(처리자)*/ TBDCMACM002M D WHERE A.RQSTR_ENO = B.TRGT_NOP_ENO(+) AND A.PRCS_PIC_ENO = C.TRGT_NOP_ENO(+) AND A.DMND_DEPT_CD = D.SRECS_DEPT_CD(+) AND A.GDS_KBN='2' AND A.DMND_DEPT_CD = #DMND_DEPT_CD# AND A.DMND_YMD &gt;= #strRQS_DTS# AND A.DMND_YMD &lt;= #strRQS_DTE# AND (D.CNSTN_MBCMT_DEPT_NM LIKE '%'||#strSEARCH_NM#||'%' OR A.RQS_TIT_NM LIKE '%'||#strSEARCH_NM#||'%' OR A.DMND_CN LIKE '%'||#strSEARCH_NM#||'%' OR A.PRCS_CN LIKE '%'||#strSEARCH_NM#||'%') AND B.USER_NM LIKE '%'||#strRQR_NAM#||'%' AND C.USER_NM LIKE '%'||#strHNDL_PEN_NAM#||'%' AND A.PRCS_YMD IS NULL AND A.PRCS_YMD IS NOT NULL ORDER BY TO_NUMBER(A.GDS_RQS_SNO) DESC ) AA

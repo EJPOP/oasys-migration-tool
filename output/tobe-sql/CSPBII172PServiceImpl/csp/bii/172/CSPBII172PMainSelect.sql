@@ -1,0 +1,8 @@
+SELECT FRS_MDM_SQNO /* 포렌식매체순번 */,
+    INFO_YR /* 정보년도 */,
+    INFO_MLG_QTR_SECD /* 정보마일리지분기구분코드 */,
+    TRGT_NOP_ENO /* 대상인원직원전산번호 */,
+    F_USR_INFO(TRGT_NOP_ENO,'2') AS F_USR_INFO,
+    SLCT_PRCS_CN /* 청탁처리내용 */,
+    TO_CHAR(PET_DT,'YYYY-MM-DD HH24:MI') AS PET_DT /* 조작일시 */
+FROM TB_CSPBII190L WHERE 1=1 AND INFO_YR = #INFO_YR# AND INFO_MLG_QTR_SECD = #INFO_MLG_QTR_SECD# ORDER BY FRS_MDM_SQNO DESC

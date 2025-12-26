@@ -1,0 +1,1 @@
+UPDATE TB_BADGDA001M /* 통보사항 기본 */ SET STT_RCPT_STTS_SECD = #STT_RCPT_STTS_SECD# /* 접수상태코드 */ , ATRZ_DOC_NO = #ATRZ_DOC_NO# /* 결재문서번호 */ , CPLT_YMD = #CPLT_YMD# /* 완결일 */ WHERE INST_CD = #INST_CD# /* 기관코드 */ AND NTFCTN_SECD = #NTFCTN_SECD# /* 통보구분코드 */ AND NTFCTN_SQNO = #NTFCTN_SQNO# /* 통보번호 */

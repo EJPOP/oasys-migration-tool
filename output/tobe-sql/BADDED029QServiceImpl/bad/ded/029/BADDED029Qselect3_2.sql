@@ -1,0 +1,7 @@
+SELECT RGN_SECD /* 지역구분코드 */,
+    F_CODE_NM('1000023',TE.RGN_SECD) AS F_CODE_NM,
+    /*구분*/ SUM(BZTRP_DCN) AS BZTRP_DCN /* 출장일수 */,
+    /*연인원*/ SUM(LEAD_CST) AS LEAD_CST /* 지휘비용 */,
+    /*지휘비*/ SUM(SPM_CST) AS SPM_CST /* 보충비용 */,
+    /*보충경비*/ SUM(LEAD_CST) + SUM(SPM_CST) AS LEAD_CST /* 지휘비용 */
+FROM TB_BADDED011L TE WHERE BZTRP_YR = #BZTRP_YR# AND BZTRP_SQNO =#BZTRP_SQNO# AND CMPTN_YN = 'Y' GROUP BY RGN_SECD

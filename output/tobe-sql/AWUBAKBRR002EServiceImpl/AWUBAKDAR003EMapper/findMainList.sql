@@ -1,0 +1,12 @@
+/* AWUSYMDCM001EMapper.findMainList 리스트 조회 */ SELECT DISTINCT T1.CVLCPT_ADT_YR AS CVLCPT_ADT_YR /* 민원감사년도 */,
+    T1.ADT_NO /* 감사번호 */,
+    T1.ADT_MTTR_NM /* 감사사항명 */,
+    F_MNG_KND_AUDYRNO(CVLCPT_ADT_YR, ADT_NO, NULL, '-') AS ADT_CLSF_NO /* 감사분류번호 */,
+    TO_CHAR(TO_DATE(T1.RLS_YMD, 'YYYYMMDD'), 'YYYY-MM-DD') AS RLS_YMD /* 공개일자 */
+FROM ( SELECT T1.CVLCPT_ADT_YR /* 민원감사년도 */,
+    T1.ADT_NO /* 감사번호 */,
+    MIN(T1.RLS_CN) AS RLS_CN /* 공개내용 */,
+    MIN(T1.OPEN_TIT_NM) AS OPEN_TIT_NM,
+    MIN(T1.ADT_MTTR_NM) AS ADT_MTTR_NM /* 감사사항명 */,
+    MIN(T1.RLS_YMD) AS RLS_YMD /* 공개일자 */
+FROM TBAWUBAKDAR002M T1 ,TBBADEAR033M T2 WHERE T1.RPRS_INST_CD = T2.RPRS_INST_CD AND T1.RLS_YMD BETWEEN REPLACE(#{ipWritDtStrDt},'-','') AND REPLACE(#{ipWritDtEndDt},'-','') AND T2.INST_SECD =#{selInsType} AND SUBSTR(T1.DSP_RQ_KND_CD,0,1) = SUBSTR(#{selProcType},0,1) AND ( T1.ADT_MTTR_NM LIKE '%'||#{ipAuditSrh}||'%' OR T1.OPEN_TIT_NM LIKE '%'||#{ipAuditSrh}||'%' OR T1.RLS_CN LIKE '%'||#{ipAuditSrh}||'%' ) AND T1.AUD_SBJ_NM LIKE '%'||#{ipAuditSrh}||'%' AND T1.OPEN_TIT_NM LIKE '%'||#{ipAuditSrh}||'%' AND T1.OPEN_TXT LIKE '%'||#{ipAuditSrh}||'%' GROUP BY T1.CVLCPT_ADT_YR, T1.ADT_NO ) T1 ORDER BY T1.CVLCPT_ADT_YR DESC, T1.ADT_NO DESC

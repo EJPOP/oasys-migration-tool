@@ -1,0 +1,5 @@
+SELECT LINK_YR /* 연계년도 */,
+    CRS_CD,
+    CRS_CDN /* 과정기수 */,
+    BBS_CN /* 게시판내용 */
+FROM TBCSPSAE303D WHERE LINK_YR = #LINK_YR# AND CRS_CD = #strEDU_CRS_CD# AND CRS_CDN = #CRS_CDN#

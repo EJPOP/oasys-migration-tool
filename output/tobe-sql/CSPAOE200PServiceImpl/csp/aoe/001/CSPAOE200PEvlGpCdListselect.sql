@@ -1,0 +1,3 @@
+SELECT EVL_GP_CD /* 평가군코드 */,
+    EVL_GP_NM /* 평가군명 */
+FROM TBCSPAOE018M WHERE 1=1 AND EVL_YR = #strEvlYr# AND HLYR_DVSN_CD = #strHlyrDvsnCd# ORDER BY EVL_GP_CD

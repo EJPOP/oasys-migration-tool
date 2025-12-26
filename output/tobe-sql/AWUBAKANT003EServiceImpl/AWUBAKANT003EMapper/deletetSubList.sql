@@ -1,0 +1,1 @@
+/* AWU.BAK.BRR.AWUBAKANT003EMapper.deletetSubList */ DELETE TBAWUBAKANT002M WHERE CFR_DVSN_CD = #{cfrDvsnCd} AND CFR_SRNO = #{cfrSrno} AND VT_SRNO = #{vtSrno}

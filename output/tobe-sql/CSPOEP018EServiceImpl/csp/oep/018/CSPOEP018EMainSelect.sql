@@ -1,0 +1,12 @@
+/* csp.oep.service.impl.CSPOEP018EServiceImpl.CSPOEP018EMainSelect */ SELECT rownum,
+    GRNDS_EXMN_AEX_SQNO /* 현장조사수용비순번 */,
+    MSG_DVSN_CD,
+    MSG_TXT,
+    SEND_CNB,
+    TO_CHAR(MSG_OM_DH,'YYYY-MM-DD') AS TO_CHAR
+FROM ( SELECT GRNDS_EXMN_AEX_SQNO /* 현장조사수용비순번 */,
+    MSG_DVSN_CD,
+    MSG_TXT,
+    SEND_CNB,
+    MSG_OM_DH
+FROM TBCSPOEP008H WHERE MSG_DVSN_CD IN ('03','04') ORDER BY GRNDS_EXMN_AEX_SQNO DESC ) WHERE rownum < 11

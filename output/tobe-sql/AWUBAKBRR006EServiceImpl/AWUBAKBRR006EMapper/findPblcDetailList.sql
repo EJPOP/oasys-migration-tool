@@ -1,0 +1,8 @@
+/* AWU.BAK.BRR.AWUBAKBRR006EMAPPER.findPblcDetailList */ SELECT PBLC_SRNO,
+    LST_SRNO,
+    LST_DVSN_NM,
+    RSCH_ASMT_TTL /* 연구과제제목 */,
+    LST_TXT,
+    WRTR_NM /* 작성자명 */,
+    CVLCPT_DOC_ID /* 민원문서아이디 */
+FROM TBAWUBAKBRR005M WHERE PBLC_SRNO = #{pblcSrno} ORDER BY LST_SRNO ASC

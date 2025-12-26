@@ -1,0 +1,1 @@
+UPDATE TBDCMACM013C SET USR_DFN_TXT_9 = #LEVEL_NO# /* 레벨 */ , USR_DFN_TXT_10 = #SORT_SNO# /* 정렬순서 */ , LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */ , LAST_USER_ID = #LAST_USER_ID# /* 최종사용자ID */ , LAST_PRCS_DEPT_CD = #LAST_PRCS_DEPT_CD# /* 최종거래부서코드 */ , LAST_MENU_ID = #LAST_MENU_ID# /* 최종메뉴ID */ WHERE CMM_CD_DVSN_CD = '1000144' /* 실부서 코드*/ AND CD = #DPT_CD#

@@ -1,0 +1,5 @@
+SELECT T1.PST_NO /* 게시물번호 */,
+    T1.RSCH_ASMT_TTL /* 연구과제제목 */,
+    T1.WRTR_NM /* 작성자명 */,
+    TO_CHAR(TO_DATE(T1.WRT_YMD, 'YYYYMMDD'), 'YYYY-MM-DD') AS WRT_YMD /* 작성일자 */
+FROM TBAWUPRKANS001M T1 WHERE T1.RSCH_RPTP_BBS_ID = 'BBSMSTR_100000000066' AND T1.TASK_TPCD LIKE '%'||#{srhTskTypCd}||'%' AND ( TIT_NM LIKE '%'||#{ipAuditSrh}||'%' OR KYWD_NM LIKE '%'||#{ipAuditSrh}||'%' ) AND TO_CHAR(TO_DATE(WRIT_DT, 'YYYYMMDD'), 'YYYY-MM-DD') BETWEEN #{ipWritDtStrDt} AND #{ipWritDtEndDt} ORDER BY 1 DESC

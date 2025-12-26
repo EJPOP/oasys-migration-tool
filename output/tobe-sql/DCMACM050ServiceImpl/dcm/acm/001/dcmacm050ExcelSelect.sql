@@ -1,0 +1,11 @@
+SELECT A.LOGIN_DATE,
+    A.TRGT_NOP_ENO /* 대상인원직원전산번호 */,
+    A.USER_ID /* 사용자아이디 */,
+    A.USER_IP,
+    B.USER_NM /* 사용자명 */,
+    A.ACTION_TYPE,
+    B.SRECS_DEPT_CD /* 심사재심의부서코드 */,
+    B.JBGD_SECD /* 직급구분코드 */,
+    F_CODE_NM('1000173',B.JBGD_SECD) AS JBGD_NM /* 직급명 */,
+    C.CNSTN_MBCMT_DEPT_NM /* 자문위원부서명 */
+FROM PTL_LOG A, TBDCMACM001M B, TBDCMACM002M C WHERE 1=1 AND A.TRGT_NOP_ENO =B.TRGT_NOP_ENO AND B.SRECS_DEPT_CD = C.SRECS_DEPT_CD AND A.ACTION_TYPE ='LOGIN' AND A.LOGIN_DATE BETWEEN #strFrom#||'000000' AND #strTo#||'235959' A.USER_IP LIKE #strIp#||'%' B.SRECS_DEPT_CD LIKE #strDptCd#||'%' A.TRGT_NOP_ENO LIKE #strUsrCnb#||'%'

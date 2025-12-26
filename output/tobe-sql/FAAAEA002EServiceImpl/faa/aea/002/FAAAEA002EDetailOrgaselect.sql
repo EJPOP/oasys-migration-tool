@@ -1,0 +1,11 @@
+SELECT LINK_YR /* 연계년도 */,
+    ADT_TRGT_INST_NM /* 감사대상기관명 */,
+    TRGT_INST_CONT /* 대상기관개수 */,
+    PSCP_NOPE /* 정원인원수 */,
+    EMP_NOPE + INLDR_NOPE AS EMP_NOPE /* 직원인원수 */,
+    SELF_ADT_ORGA_PSCP_NOPE /* 자체감사기구정원인원수 */,
+    SELF_ADT_ORGA_NOW_NOPE /* 자체감사기구현재인원수 */,
+    BGT_AMT /* 예산금액 */,
+    MAIN_INST_CN /* 주요기관내용 */,
+    TO_CHAR(FRST_REG_DT,'yyyy.MM.dd') AS FRST_REG_DT /* 최초등록일시 */
+FROM TBFAAAEA013M WHERE INST_CD = #INST_CD# WHERE INST_CD LIKE REPLACE(#INST_CD#,'000','') || '%' WHERE INST_CD = #INST_CD# WHERE INST_CD LIKE REPLACE(#INST_CD#,'000','') || '%' AND DEL_YN = 'N' ORDER BY LINK_YR DESC,FRS_MDM_SQNO ASC,ADT_TRGT_INST_NM,TRGT_INST_CONT

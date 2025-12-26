@@ -1,0 +1,1 @@
+UPDATE TB_DCMIDM002M SET DMND_GROUP_NM = #DMND_GROUP_NM# /* 요청그룹명 */, OWNR_ENO = #OWNR_ENO# /* 소유자직원전산번호 */, GROUP_TPCD = #GROUP_TPCD# /* 그룹유형코드 */, LAST_USER_ID = #LAST_USER_ID# /* 최종사용자아이디 */, LAST_PRCS_DEPT_CD = #LAST_PRCS_DEPT_CD# /* 최종처리부서코드 */, LAST_MENU_ID = #LAST_MENU_ID# /* 최종메뉴아이디 */, LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */WHERE DMND_GROUP_ID = #DMND_GROUP_ID#

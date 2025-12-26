@@ -1,0 +1,5 @@
+SELECT INFO_YR /* 정보년도 */,
+    TPOF_CYCL /* 제보차수 */,
+    ATT_FL_DVSN_CD,
+    CVLCPT_DOC_ID /* 민원문서아이디 */
+FROM TBCSPSAE802M WHERE INFO_YR = #INFO_YR# AND TPOF_CYCL = #TPOF_CYCL#

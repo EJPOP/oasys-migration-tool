@@ -1,0 +1,7 @@
+SELECT INFO_YR /* 정보년도 */,
+    GD_CD,
+    F_ORG_INFO(GD_CD,'1') AS F_ORG_INFO,
+    TASK_SNO,
+    GD_CD,
+    F_ORG_INFO(GD_CD,'5') AS OTSD_EXPRT_ADDR /* 외부전문가주소 */
+FROM TBBADCMR018L WHERE 1=1 AND INFO_YR = #INFO_YR# AND TASK_SNO =#strTaskSno#

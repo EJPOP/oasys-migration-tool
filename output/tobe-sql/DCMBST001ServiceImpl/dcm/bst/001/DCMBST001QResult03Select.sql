@@ -1,0 +1,5 @@
+/*처리안 단계*/ SELECT NVL(STTC_NM_3,0) AS STTC_NM_3,
+    /*종료보고비보고*/ NVL(STTC_NM_4,0) AS STTC_NM_4,
+    /*과 작성중*/ NVL(STTC_NM_5,0) + NVL(STTC_NM_6,0) + NVL(STTC_NM_7,0) AS STTC_NM_5,
+    /*총차국장 결재중*/ NVL(STTC_NM_8,0) AS STTC_NM_8 /* 주심위원검토중 */
+FROM TBDCMBST002M WHERE STATS_YR =#STATS_YR# AND STTC_MN= #strMn# AND STTC_WEK_NO=#strWekNo# AND STTC_DVSN_CD=#strSttcDvsnCd#

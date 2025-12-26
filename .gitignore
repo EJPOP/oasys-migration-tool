@@ -45,3 +45,6 @@ bin/
 /out
 /.idea
 *.log
+
+# generated outputs
+/output/

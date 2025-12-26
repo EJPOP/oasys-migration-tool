@@ -1,0 +1,15 @@
+SELECT F_USR_INFO(B.LAG_INV_CNB,'2') AS F_USR_INFO,
+    B.BOO_LEND_DT /* 도서대출일 */,
+    DECODE(B.BOO_REN_YN_CD,'0',B.BOO_REN_APT_DT,B.BOO_REN_DT) AS BOO_REN_YN_CD /* 도서반납(예정)일 */,
+    A.CAT_SYM_NM /* 분류기호명 */,
+    SUBSTR(A.CAT_SYM_NM,1,1)||'-'||SUBSTR(A.CAT_SYM_NM,2,3)||'-'||SUBSTR(A.CAT_SYM_NM,5,3) AS SUBSTR,
+    A.BOO_TIT_NM /* 도서제목명 */,
+    A.RSCH_RPTP_AUT_NM /* 연구보고서저자명 */,
+    F_CODE_NM('1000325', NVL(B.BOO_REN_YN_CD,'1')) AS F_CODE_NM /* 도서반납여부 */,
+    A.COPT_CAT_CD /* 소관분류코드 */,
+    A.BOO_KND_CD /* 도서종류코드 */,
+    A.BOO_NO /* 도서번호 */,
+    A.BOO_NO||'-'||A.BOO_VLE_NO AS BOO_NO,
+    A.BOO_VLE_NO,
+    B.BOO_LEND_SLN /* 도서대출연번 */
+FROM TBCSPQBO001M A /*도서자료기본*/ ,TBCSPQBO002H B /*도서대출이력*/ WHERE 1=1 AND A.COPT_CAT_CD = B.COPT_CAT_CD AND A.BOO_KND_CD = B.BOO_KND_CD AND A.BOO_NO = B.BOO_NO AND A.CAT_SYM_NM = B.CAT_SYM_NM AND A.BOO_VLE_NO = B.BOO_VLE_NO AND A.COPT_CAT_CD = #strCOPT_CAT_CD# AND B.LAG_INV_CNB = #strCNB# AND B.BOO_LEND_DT &gt;= #strBOO_LEND_DTS# AND B.BOO_LEND_DT &lt;= #strBOO_LEND_DTE# AND B.BOO_REN_YN_CD = #strBOO_REN_YN_CD# AND A.BOO_TIT_NM like '%'||#strBOO_TIT_NM1#||'%' AND (A.BOO_TIT_NM like '%'||#strBOO_TIT_NM1#||'%' AND A.BOO_TIT_NM like '%'||#strBOO_TIT_NM3#||'%') AND (A.BOO_TIT_NM like '%'||#strBOO_TIT_NM1#||'%' OR A.BOO_TIT_NM like '%'||#strBOO_TIT_NM3#||'%') AND (A.BOO_TIT_NM like '%'||#strBOO_TIT_NM1#||'%' AND A.BOO_TIT_NM like '%'||#strBOO_TIT_NM2#||'%') AND (A.BOO_TIT_NM like '%'||#strBOO_TIT_NM1#||'%' OR A.BOO_TIT_NM like '%'||#strBOO_TIT_NM2#||'%') AND (A.BOO_TIT_NM like '%'||#strBOO_TIT_NM1#||'%' AND A.BOO_TIT_NM like '%'||#strBOO_TIT_NM2#||'%' AND A.BOO_TIT_NM like '%'||#strBOO_TIT_NM3#||'%') AND (A.BOO_TIT_NM like '%'||#strBOO_TIT_NM1#||'%' AND (A.BOO_TIT_NM like '%'||#strBOO_TIT_NM2#||'%' OR A.BOO_TIT_NM like '%'||#strBOO_TIT_NM3#||'%')) AND ( (A.BOO_TIT_NM like '%'||#strBOO_TIT_NM1#||'%' OR A.BOO_TIT_NM like '%'||#strBOO_TIT_NM2#||'%') AND A.BOO_TIT_NM like '%'||#strBOO_TIT_NM3#||'%') AND (A.BOO_TIT_NM like '%'||#strBOO_TIT_NM1#||'%' OR A.BOO_TIT_NM like '%'||#strBOO_TIT_NM2#||'%' OR A.BOO_TIT_NM like '%'||#strBOO_TIT_NM3#||'%') ORDER BY B.BOO_LEND_DT DESC

@@ -1,0 +1,1 @@
+/* AWUBAKCII002EMapper.deleteSdl 일정 삭제 */ DELETE TBAWUBAKCII002M WHERE FRS_MDM_SQNO = #{srno}

@@ -1,0 +1,7 @@
+SELECT /*CSPHPM008QExcelExportSelect*/ F_CODE_NM('1000921',A.MTRL_DVSN_CD) AS F_CODE_NM,
+    /*자료구분코드*/ TO_CHAR(TO_DATE(A.REG_YMD),'YYYY-MM-DD') AS REG_YMD /* 등록일자 */,
+    /*등록일*/ A.PBC_YR,
+    /*발행연도*/ A.PBC_PLAC,
+    /*발행처*/ A.ATR,
+    /*저자*/ A.RSCH_ASMT_TTL AS RSCH_ASMT_TTL /* 연구과제제목 */
+FROM TBCSPHPM008M A WHERE 1=1 AND A.MTRL_DVSN_CD = #strMTRL_DVSN_CD# AND (A.PBC_PLAC LIKE '%'||#strSEARCH_NM#||'%' OR A.RSCH_ASMT_TTL LIKE '%'||#strSEARCH_NM#||'%' OR A.ATR LIKE '%'||#strSEARCH_NM#||'%') ORDER BY TO_NUMBER(A.MTRL_SNO) DESC

@@ -1,0 +1,4 @@
+/* csp.bii.service.impl.CSPBII100EServiceImpl.CSPBII100EAudMtrlLdgInsert */ INSERT INTO TBBADHAB006M SELECT TO_CHAR(SYSDATE, 'YYYY') /* 년도 */,
+    A.PRCS_DEPT_CD /* 처리부서코드 */,
+    (SELECT NVL(MAX(FRS_MDM_SQNO), 0) + 1 AS FRS_MDM_SQNO /* 포렌식매체순번 */
+FROM TBBADHAB006M WHERE LINK_YR = TO_CHAR(SYSDATE, 'YYYY') AND SRECS_DEPT_CD = A.PRCS_DEPT_CD) /* 일련번호 */ , '10' /* 관련업무코드[10:정보사항] */ , A.INFO_SQNO /* 관련번호 */ , TO_CHAR(SYSDATE, 'YYYYMMDD') /* 확정일 */ , A.REL_INST_CD /* 관계기관코드 */ , A.INFO_NM /* 제목명 */ , '' /* 실지감사일 */ , '' /* 처리담당자전산번호 */ , '' /* 결재일 */ , '' /* 처리상황내용 */ , '' /* 위원회부의내용 */ , '' /* 시행일 */ , '' /* 비고사항 */ , #FNL_USR_ID# , #FNL_USR_ID# , #FNL_DEAL_DPT_CD# , #FNL_MNU_ID# , SYSDATE , SYSDATE FROM TB_CSPBII100M A WHERE A.ATRZ_DOC_NO = #ATRZ_DOC_NO# AND A.PRCS_DRCTN_SECD = '3'

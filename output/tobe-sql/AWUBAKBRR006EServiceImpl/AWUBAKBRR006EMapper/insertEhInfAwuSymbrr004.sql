@@ -1,0 +1,1 @@
+INSERT INTO EH_INF_AWU_BAKBRR004 (LINK_SQNO, CLM_LINK_TRRC_SECD, BLL_LINK_SECD, PBLC_SRNO, PBLC_DVSN_CD, CNOV_NO, PBC_YM, RSCH_ASMT_TTL, LINK_YR, CV_DOC_ID, ELCT_BKS_URL, FRST_REG_DT, LAST_MDFCN_DT) VALUES( #{ifSeq}, 'SND', #{conDvsnCd}, #{pblcSrno} , #{pblcDvsnCd} , #{cnovNo} , #{pbcYm} , #{titNm} , #{LINK_YR} , #{cvDocId} , #{elctBksUrl} , #{frtRegiDh} , #{fnlMdfDh} )

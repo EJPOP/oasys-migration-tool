@@ -1,0 +1,1 @@
+UPDATE TBAWUPRKANS001M SET RSCH_ASMT_TTL = #{titNm} /* 연구과제제목 */, DOC_ID = #{docId} /* 민원문서아이디 */, LAST_USER_ID = #{ssUsrId} /*최종사용자ID*/ , FNL_DEAL_DPT_CD = #{ssDptCd} /*최종거래부서코드*/ , LAST_MENU_ID = #{ssMnuId} /*최종메뉴ID*/ , FNL_MDF_DH = SYSDATE /*최종수정일시*/ WHERE POST_NO = #{postNo} AND RSCH_RPTP_BBS_ID = 'BBSMSTR_900000000004'

@@ -1,0 +1,17 @@
+SELECT D1.ADT_YR /* 감사년도 */,
+    D1.ADT_NO /* 감사번호 */,
+    D1.DSPS_RQT_SQNO /* 처분요구순번 */,
+    D1.RPRS_INST_CD /* 대표기관코드 */,
+    D1.ADT_MTTR_NM /* 감사사항명 */,
+    D1.RLS_TTL_CN /* 공개제목내용 */,
+    D1.RLS_CN /* 공개내용 */,
+    D1.PBRL_SBMSN_YN /* 홍보제출여부 */,
+    D1.DSPS_RQT_KDCD /* 처분요구종류코드 */,
+    D1.REL_INST_NM /* 관계기관명 */,
+    D1.REG_YMD /* 등록일자 */,
+    D1.DOC_ID /* 문서아이디 */,
+    F_USR_INFO(#strCnb#,'1') AS FRST_USER_ID /* 최초사용자아이디 */,
+    D1.LINK_YN /* 연계여부 */,
+    D1.ENFC_YR /* 시행년도 */,
+    D1.HMPG_RLS_YN /* 누리집공개여부 */
+FROM TB_BADEAR030M D1 WHERE D1.ADT_YR = #CVLCPT_ADT_YR# AND D1.ADT_NO = #ADT_NO#

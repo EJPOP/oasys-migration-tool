@@ -1,0 +1,1 @@
+UPDATE TBCSPSAE101M SET BLL_SBJCT_NM = #BLL_SBJCT_NM# /* 계산서과목명 */,  BSC_OP_SUBJ_YN = #BSC_OP_SUBJ_YN#,  USE_YN = #USE_YN# /* 사용여부 */,  LAST_USER_ID = #LAST_USER_ID# /* 최종사용자아이디 */,  LAST_PRCS_DEPT_CD = #LAST_PRCS_DEPT_CD# /* 최종처리부서코드 */,  LAST_MENU_ID = #LAST_MENU_ID# /* 최종메뉴아이디 */,  LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */WHERE SUBJ_CD = #SUBJ_CD#
