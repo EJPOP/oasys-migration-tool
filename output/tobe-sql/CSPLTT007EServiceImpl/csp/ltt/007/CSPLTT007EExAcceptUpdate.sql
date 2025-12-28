@@ -1,1 +1,0 @@
-UPDATE TBCSPLTT001M SET PRGRS_STTS_SECD = 'H' /*진행상태*/ , LAST_MDFCN_DT = SYSDATE /*최종수정일시*/ , EXAM_CNB = #EXAM_CNB# /*검토자전산번호*/ , EXAM_CNB = #S_CNB# /*검토자전산번호*/ WHERE TK_YE = #TK_YE# AND TK_SLN = #TK_SLN#

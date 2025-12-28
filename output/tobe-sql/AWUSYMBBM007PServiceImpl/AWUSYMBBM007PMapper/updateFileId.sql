@@ -1,1 +1,0 @@
-UPDATE PTL_BAI_NEWS SET LIST_IMG_ID = #{listImgId} ,  MAIN_IMG_ID = #{mainImgId} ,  THUMB_IMG_ID = #{thumbImgId} WHERE NTT_ID = #{nttId} AND BBS_ID = 'BBSMSTR_100000000002'

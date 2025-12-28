@@ -1,4 +1,0 @@
-INSERT INTO TBCSPBII401H (INFO_YR /* 암호화주민등록번호 */, FRS_MDM_SQNO, HST_DT, INFO_RLPR_SQNO, CRU_RRNO_SCRTY, RLPR_NM, OGDP_INST_CD /* 소속기관코드 */, JBGD_NM /* 계급코드 */, JBPS_NM /* 직무등급코드 */, FRST_USER_ID /* 최초사용자ID */, LAST_USER_ID /* 최종사용자ID */, LAST_PRCS_DEPT_CD /* 최종거래부서코드 */, LAST_MENU_ID /* 최종메뉴ID */, FRST_REG_DT /* 최초등록일시 */, LAST_MDFCN_DT /* 최종수정일시 */) SELECT INFO_YR /* 정보년도 */,
-    FRS_MDM_SQNO /* 포렌식매체순번 */,
-    (SELECT AS HST_DT
-FROM TBCSPBII400L WHERE INFO_YR = #INFO_YR# AND FRS_MDM_SQNO = #FRS_MDM_SQNO# ) , INFO_RLPR_SQNO , CRU_RRNO_SCRTY , RLPR_NM , OGDP_INST_CD /* 소속기관코드 */ , JBGD_NM /* 계급코드 */ , JBPS_NM /* 직무등급코드 */ , FRST_USER_ID /* 최초사용자ID */ , LAST_USER_ID /* 최종사용자ID */ , LAST_PRCS_DEPT_CD /* 최종거래부서코드 */ , LAST_MENU_ID /* 최종메뉴ID */ , FRST_REG_DT /* 최초등록일시 */ , LAST_MDFCN_DT /* 최종수정일시 */ FROM TBCSPBII401L WHERE INFO_YR = #INFO_YR# AND FRS_MDM_SQNO = #FRS_MDM_SQNO#

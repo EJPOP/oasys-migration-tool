@@ -1,1 +1,0 @@
-DELETE FROM TB_BADGDA001L /* 통보사항관계자내역 */ WHERE INST_CD = #INST_CD# /* 기관코드 */ AND NTFCTN_SECD = #NTFCTN_SECD# /* 통보구분코드 */ AND NTFCTN_SQNO = #NTFCTN_SQNO# /* 통보번호 */ AND FRS_MDM_SQNO = #FRS_MDM_SQNO# /*일련번호*/

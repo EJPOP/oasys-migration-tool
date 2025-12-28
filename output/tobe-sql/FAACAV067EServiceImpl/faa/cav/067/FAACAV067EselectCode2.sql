@@ -1,3 +1,0 @@
-/* faa/cav/067/FAACAV067EselectCode2 */ SELECT ITM_CD /* 항코드 */,
-    ITM_NM /* 항명 */
-FROM TWFAACAV071C WHERE USER_HSTRY_SECD = '2'

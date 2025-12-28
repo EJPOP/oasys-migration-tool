@@ -1,1 +1,0 @@
-/* AWUSYMBBM001EMapper.insertCommonTemplete 템플릿 등록 */ INSERT INTO TBAWUSYMBBM001M (TMPL_ID, TMPL_NM, FL_RUT_NM, FRST_USER_ID, LAST_USER_ID, LAST_PRCS_DEPT_CD, LAST_MENU_ID, FRST_REG_DT, LAST_MDFCN_DT) VALUES ( #{tmplId} , #{tmplNm} , #{flRutNm} , #{ssUsrId} , #{ssUsrId} , #{ssDptCd} , #{ssMnuId} , SYSDATE , SYSDATE )

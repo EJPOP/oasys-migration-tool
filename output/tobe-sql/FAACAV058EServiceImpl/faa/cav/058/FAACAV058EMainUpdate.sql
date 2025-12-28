@@ -1,1 +1,0 @@
-/* faa/cav/058/FAACAV058EMainUpdate */ UPDATE TWFAACAV065L SET RGTR_NM = #RGTR_NM# /* 등록자명 */,  REG_INST_NM = #REG_INST_NM# /* 등록기관명 */,  CRU_TELNO = #CRU_TELNO# /* 부패전화번호 */,  RSCH_ASMT_TTL = #RSCH_ASMT_TTL# /* 연구과제제목 */,  BBS_CN = #BBS_CN# /* 게시판내용 */,  CVLCPT_DOC_ID = #CVLCPT_DOC_ID# /* 민원문서아이디 */WHERE FRS_MDM_SQNO = #FRS_MDM_SQNO# AND BBS_SECD = #BBS_SECD#

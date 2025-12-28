@@ -1,4 +1,0 @@
-SELECT SV_TIT_CD,
-    SV_TIT_NM,
-    USE_YN /* 사용여부 */
-FROM TBCSPSAE121C

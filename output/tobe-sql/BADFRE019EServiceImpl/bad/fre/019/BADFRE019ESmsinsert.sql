@@ -1,1 +1,0 @@
-INSERT INTO MSG_DATA (CVLCPT_MSG_SQNO /*메시지의 고유번호*/, CUR_STATE /*상태 값(발송요청:0, 전송 중:1, 전송:2, 결과수신:3)*/, REQ_DATE /*즉시전송 및 예약 일시*/, CALL_TO /*수신번호*/, CALL_FROM /*발신번호*/, MSG_TYPE /*메시지의 TYPE(4: SMS 전송 ,5: URL 전송 ,6: MMS전송)*/, CONT_SEQ /* MMS 메시지 테이블과 연결되는 키 */) VALUES ( MSG_DATA_SEQ.NEXTVAL , 0 , SYSDATE , REPLACE(#CALL_TO# ,'-','') , REPLACE(#CALL_FROM# ,'-','') , 6 , #MAX_CNT#)

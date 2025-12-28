@@ -1,9 +1,0 @@
-SELECT INFO_YR /* 정보년도 */,
-    TPOF_CYCL /* 제보차수 */,
-    CABT_GP_CD,
-    CABT_CD,
-    QST_NO,
-    GRNDS_EXMN_AEX_SQNO /* 현장조사수용비순번 */,
-    QST,
-    CRU_ESNTL_YN /* 부패필수여부 */
-FROM TBCSPSAE803M WHERE INFO_YR = #INFO_YR# AND TPOF_CYCL = #TPOF_CYCL# AND CABT_GP_CD = #strCabtGpCd# AND CABT_CD = #strCabtCd# ORDER BY GRNDS_EXMN_AEX_SQNO ASC

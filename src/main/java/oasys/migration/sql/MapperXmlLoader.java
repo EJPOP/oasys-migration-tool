@@ -94,20 +94,32 @@ public class MapperXmlLoader {
                 || "delete".equals(tag);
     }
 
+    /**
+     * ✅ MyBatis 동적 SQL을 위해 하위 노드까지 재귀적으로 TEXT/CDATA를 수집
+     */
     private String extractSqlText(Element el) {
         StringBuilder sb = new StringBuilder();
-        NodeList nodes = el.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            Node n = nodes.item(i);
-            if (n.getNodeType() == Node.TEXT_NODE
-                    || n.getNodeType() == Node.CDATA_SECTION_NODE) {
-                sb.append(n.getTextContent());
-            }
-        }
+        appendTextRec(el, sb);
         return sb.toString();
     }
 
+    private void appendTextRec(Node node, StringBuilder sb) {
+        if (node == null) return;
+
+        short type = node.getNodeType();
+        if (type == Node.TEXT_NODE || type == Node.CDATA_SECTION_NODE) {
+            sb.append(node.getTextContent());
+            return;
+        }
+
+        NodeList children = node.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            appendTextRec(children.item(i), sb);
+        }
+    }
+
     private String normalizeSql(String sql) {
+        if (sql == null) return "";
         return sql.replaceAll("\\s+", " ").trim();
     }
 }

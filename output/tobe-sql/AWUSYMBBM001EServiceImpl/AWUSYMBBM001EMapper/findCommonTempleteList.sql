@@ -1,5 +1,0 @@
-/* AWUSYMBBM001EMapper.findCommonTempleteList 템플릿 리스트 조회 */ SELECT TMPL_ID,
-    TMPL_NM,
-    FL_RUT_NM,
-    COUNT(1) OVER () AS 1
-FROM TBAWUSYMBBM001M WHERE 1=1 AND TMPL_NM LIKE '%'||#{srchTmplNm}||'%' ORDER BY FRT_REGI_DH DESC

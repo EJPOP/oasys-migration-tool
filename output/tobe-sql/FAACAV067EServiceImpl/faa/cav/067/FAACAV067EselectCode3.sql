@@ -1,3 +1,0 @@
-/* faa/cav/067/FAACAV067EselectCode3 */ SELECT DITM_CD /* 세항코드 */,
-    DITM_NM /* 세항명 */
-FROM TWFAACAV072C WHERE USER_HSTRY_SECD = '2'

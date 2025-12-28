@@ -1,6 +1,8 @@
 package oasys.migration.sql;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +17,17 @@ public class MapperXmlIndex {
      */
     public void buildIndex(List<Path> xmlFiles) {
 
-        for (Path xml : xmlFiles) {
-            Map<String, SqlStatement> parsed =
-                    loader.loadFromFile(xml);
+        if (xmlFiles == null || xmlFiles.isEmpty()) {
+            return;
+        }
+
+        // ✅ Files.walk() 반환 순서는 환경에 따라 달라질 수 있어
+        // "중복이면 최초 1건 유지" 정책이 흔들리지 않도록 정렬 후 처리
+        List<Path> ordered = new ArrayList<>(xmlFiles);
+        ordered.sort(Comparator.comparing(p -> p.toAbsolutePath().normalize().toString()));
+
+        for (Path xml : ordered) {
+            Map<String, SqlStatement> parsed = loader.loadFromFile(xml);
 
             for (SqlStatement stmt : parsed.values()) {
                 String key = stmt.getNamespace() + "." + stmt.getSqlId();

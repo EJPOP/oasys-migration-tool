@@ -1,7 +1,0 @@
-SELECT A.NTT_ID,
-    A.BBS_ID /* 게시판아이디 */,
-    A.NTT_SJ,
-    A.DOC_YEAR,
-    A.CVLCPT_DOC_ID /* 민원문서아이디 */,
-    A.CNN_CON2
-FROM TBCSPTSM002L A WHERE A.BBS_ID='BBSMSTR_100000000011' AND A.USE_AT = 'Y' AND A.DOC_YEAR = #strYr# AND A.CNN_CON2 = #strCnnCon2# AND UPPER(A.NTT_SJ) LIKE UPPER('%' || #strSearchBox# || '%')

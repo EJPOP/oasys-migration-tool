@@ -1,9 +1,0 @@
-SELECT A.BZTRP_YR /* 출장년도 */,
-    A.FRS_MDM_SQNO /* 포렌식매체순번 */,
-    A.CNB_NUM,
-    A.BZT_CNB,
-    A.SRECS_DEPT_CD /* 심사재심의부서코드 */,
-    F_DPT_INFO(A.SRECS_DEPT_CD,'1') AS CNSTN_MBCMT_DEPT_NM /* 자문위원부서명 */,
-    F_USR_INFO(A.BZT_CNB, '2') AS F_USR_INFO,
-    F_USR_INFO(A.BZT_CNB, '3') AS JBGD_SECD /* 직급구분코드 */
-FROM TBCSPHIN004C A /* 출장자 */ WHERE A.BZTRP_YR = #BZTRP_YR# AND A.FRS_MDM_SQNO = #FRS_MDM_SQNO# ORDER BY A.CNB_NUM

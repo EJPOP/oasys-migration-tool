@@ -1,1 +1,0 @@
-UPDATE TBCSPTSM001M SET FMDA_AUDIT_ST = #{fmdaAuditSt},  FMDA_AUDIT_ET = #{fmdaAuditEt},  FMDA_DEPT = #{fmdaDept},  FMDA_PROC = #{fmdaProc},  FMDA_TXT = #{fmdaTxt},  FMDA_SJ = #{fmdaSj},  FMDA_UP_DT = SYSDATE,  FMDA_PUBLIC_DT = #{fmdaPublicDt},  FMDA_PUBLIC_YN = #{fmdaPublicYn} WHERE FMDA_IDX = #{fmdaIdx}

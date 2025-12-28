@@ -1,1 +1,0 @@
-/* AWUSYMDCM001EMapper.deleteMain 공통코드 삭제 */ DELETE FROM TBAWUSYMDCM001M WHERE CD_DVSN_CD = #{cdDvsnCd}

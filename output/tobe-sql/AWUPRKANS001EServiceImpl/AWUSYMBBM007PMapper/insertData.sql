@@ -1,1 +1,0 @@
-INSERT INTO PTL_BAI_NEWS (NTT_ID, BBS_ID, NTT_NO, NTT_SJ, NTT_CN, NTCR_NM, FRST_REGIST_PNTTM, USER_HSTRY_SECD) VALUES ( #{nttId}, 'BBSMSTR_100000000002', '0', #{nttSj}, #{nttCn}, '관리자', nvl(replace(#{frstRegistDt},'-',''),sysdate) , #{dvsnCd} )

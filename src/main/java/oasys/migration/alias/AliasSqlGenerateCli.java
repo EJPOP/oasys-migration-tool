@@ -8,12 +8,23 @@ import oasys.migration.sql.SqlStatementRegistry;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AliasSqlGenerateCli {
+
+    // ============================================================
+    // ✅ System properties (SqlsDirectoryScanner와 동일 키를 가정)
+    // ============================================================
+    private static final String PROP_BASE_DIR = "oasys.migration.baseDir";
+    private static final String PROP_SYSTEM   = "oasys.migration.system";
+    private static final String PROP_SQLS_DIR = "oasys.migration.sqlsDir";
+
+    // ✅ pretty option system property key
+    private static final String PROP_PRETTY   = "oasys.migration.pretty";
 
     private static volatile String CURRENT_KEY = "";
     private static final AtomicInteger CURRENT_INDEX = new AtomicInteger(0);
@@ -23,30 +34,95 @@ public class AliasSqlGenerateCli {
         long t0 = System.nanoTime();
         Map<String, String> argv = parseArgs(args);
 
-        AliasSqlGenerator.Mode mode = parseMode(argv.getOrDefault("mode", "ASIS_ALIAS_TO_TOBE"));
-        String callchainCsv = argv.getOrDefault("csv", "mapping/service_sql_xref.csv");
-        String columnMappingXlsx = argv.getOrDefault("mapping", "mapping/column_mapping.xlsx");
+        // ------------------------------------------------------------
+        // ✅ baseDir / system / sqlsDir 결정 + system properties 반영
+        // ------------------------------------------------------------
+        // 1) baseDir (CLI 우선, 없으면 -D, 없으면 jar 위치)
+        applyBaseDirPropertyIfPresent(argv);
+        Path baseDir = resolveBaseDir();
+        ensureBaseDirProperty(baseDir);
 
-        Path outputSqlDir = Path.of(argv.getOrDefault("out", "output/alias-sql"));
-        Path resultXlsx = Path.of(argv.getOrDefault("result", "output/alias-sql-result.xlsx"));
+        // 2) system (CLI/system property/path 자동 추론)
+        String system = resolveSystem(argv);
+        ensureSystemProperty(system);
+
+        // 3) sqlsDir (우선순위: -D sqlsDir > --sqlsDir > 기본(system 있으면 systems/<system>/sqls))
+        Path sqlsDir = resolveSqlsDir(baseDir, system, argv);
+        ensureSqlsDirProperty(sqlsDir);
+
+        // ------------------------------------------------------------
+        // mode / input / output
+        // ------------------------------------------------------------
+        AliasSqlGenerator.Mode mode = parseMode(argv.getOrDefault("mode", "ASIS_ALIAS_TO_TOBE"));
+
+        // system 프리셋: 옵션이 없을 때만 기본값으로 채움
+        String callchainCsv = argv.containsKey("csv")
+                ? argv.get("csv")
+                : (system != null ? "systems/" + system + "/mapping/service_sql_xref.csv" : "mapping/service_sql_xref.csv");
+
+        String columnMappingXlsx = argv.containsKey("mapping")
+                ? argv.get("mapping")
+                : (system != null ? "systems/" + system + "/mapping/column_mapping.xlsx" : "mapping/column_mapping.xlsx");
+
+        String defaultOut = (mode == AliasSqlGenerator.Mode.TOBE_SQL)
+                ? (system != null ? "output/" + system + "/tobe-sql" : "output/tobe-sql")
+                : (system != null ? "output/" + system + "/alias-sql" : "output/alias-sql");
+
+        String defaultResult = (mode == AliasSqlGenerator.Mode.TOBE_SQL)
+                ? (system != null ? "output/" + system + "/tobe-sql.xlsx" : "output/tobe-sql.xlsx")
+                : (system != null ? "output/" + system + "/alias-sql-result.xlsx" : "output/alias-sql-result.xlsx");
+
+        Path outputSqlDir = resolvePath(baseDir, argv.getOrDefault("out", defaultOut));
+        Path resultXlsx   = resolvePath(baseDir, argv.getOrDefault("result", defaultResult));
+
+        // 파일 입력: baseDir 기준 절대경로로 변환
+        Path callchainCsvPath = resolvePath(baseDir, callchainCsv);
+        Path mappingXlsxPath  = resolvePath(baseDir, columnMappingXlsx);
 
         int max = parseInt(argv.get("max"), -1);
         int logEvery = parseInt(argv.get("logEvery"), 100);
         long slowMs = parseLong(argv.get("slowMs"), 500L);
         boolean failFast = parseBoolean(argv.get("failFast"), false);
+        boolean logFallback = parseBoolean(argv.get("logFallback"), false);
+
+        // ------------------------------------------------------------
+        // ✅ SQL Prettier option (기본 ON)
+        //   우선순위: --pretty > -Doasys.migration.pretty > default(true)
+        // ------------------------------------------------------------
+        String prettyRaw = argv.containsKey("pretty")
+                ? argv.get("pretty")
+                : System.getProperty(PROP_PRETTY, "true");
+
+        boolean pretty = parseBoolean(prettyRaw, true);
+        System.setProperty(PROP_PRETTY, String.valueOf(pretty));
 
         System.out.println("==================================================");
         System.out.println("[START] Alias SQL generation");
-        System.out.println("[CONF] mode      = " + mode);
-        System.out.println("[CONF] csv       = " + callchainCsv);
-        System.out.println("[CONF] mapping   = " + columnMappingXlsx);
-        System.out.println("[CONF] out       = " + outputSqlDir.toAbsolutePath());
-        System.out.println("[CONF] result    = " + resultXlsx.toAbsolutePath());
-        System.out.println("[CONF] max       = " + max);
-        System.out.println("[CONF] logEvery  = " + logEvery);
-        System.out.println("[CONF] slowMs    = " + slowMs);
-        System.out.println("[CONF] failFast  = " + failFast);
+        System.out.println("[CONF] baseDir     = " + baseDir.toAbsolutePath());
+        System.out.println("[CONF] system      = " + (system == null ? "" : system));
+        System.out.println("[CONF] sqlsDir     = " + sqlsDir.toAbsolutePath());
+        System.out.println("[CONF] mode        = " + mode);
+        System.out.println("[CONF] pretty      = " + pretty + " (use --pretty=false or -D" + PROP_PRETTY + "=false)");
+        System.out.println("[CONF] csv         = " + callchainCsvPath.toAbsolutePath());
+        System.out.println("[CONF] mapping     = " + mappingXlsxPath.toAbsolutePath());
+        System.out.println("[CONF] out         = " + outputSqlDir.toAbsolutePath());
+        System.out.println("[CONF] result      = " + resultXlsx.toAbsolutePath());
+        System.out.println("[CONF] max         = " + max);
+        System.out.println("[CONF] logEvery    = " + logEvery);
+        System.out.println("[CONF] slowMs      = " + slowMs);
+        System.out.println("[CONF] failFast    = " + failFast);
+        System.out.println("[CONF] logFallback = " + logFallback);
         System.out.println("==================================================");
+
+        // 간단 선검증 (없으면 여기서 바로 안내)
+        validateFileExists(callchainCsvPath, "xref csv (--csv)");
+        validateFileExists(mappingXlsxPath, "column mapping xlsx (--mapping)");
+        // sqlsDir는 SqlsDirectoryScanner에서 추가로 자세히 검증/예외낼 수 있지만, 여기서도 빠르게 체크
+        if (!Files.exists(sqlsDir) || !Files.isDirectory(sqlsDir)) {
+            System.out.println("[WARN] sqlsDir not found or not a directory: " + sqlsDir.toAbsolutePath());
+            System.out.println("       - sqls 폴더에 MyBatis mapper *.xml 파일을 복사해 넣어주세요.");
+            System.out.println("       - 또는 JVM 옵션: -D" + PROP_SQLS_DIR + "=<sqls폴더경로>");
+        }
 
         mkdirs(outputSqlDir);
         if (resultXlsx.getParent() != null) mkdirs(resultXlsx.getParent());
@@ -55,12 +131,11 @@ public class AliasSqlGenerateCli {
         long tSqlIdx0 = System.nanoTime();
         SqlStatementRegistry sqlRegistry = new SqlStatementRegistry();
         sqlRegistry.initialize();
-        System.out.println("[INIT] SQL index size = 7540");
         System.out.println("[STEP1] SqlStatementRegistry.initialize() done. elapsed=" + ms(tSqlIdx0) + "ms");
 
         // column mapping
         long tMap0 = System.nanoTime();
-        ColumnMappingRegistry columnMappingRegistry = new ColumnMappingRegistry(columnMappingXlsx);
+        ColumnMappingRegistry columnMappingRegistry = new ColumnMappingRegistry(mappingXlsxPath.toString());
         System.out.println("[STEP2] ColumnMappingRegistry loaded. elapsed=" + ms(tMap0) + "ms");
         System.out.println("[INIT] Column mapping size = " + columnMappingRegistry.size());
 
@@ -68,7 +143,7 @@ public class AliasSqlGenerateCli {
         long tCsv0 = System.nanoTime();
         System.out.println("[STEP3] loading xref csv...");
         ServiceSqlXrefLoader xrefLoader = new ServiceSqlXrefLoader();
-        List<ServiceSqlCall> calls = xrefLoader.load(callchainCsv);
+        List<ServiceSqlCall> calls = xrefLoader.load(callchainCsvPath.toString());
         System.out.println("[STEP3] xref csv loaded. size=" + calls.size() + ", elapsed=" + ms(tCsv0) + "ms");
 
         if (max > 0 && calls.size() > max) {
@@ -105,8 +180,8 @@ public class AliasSqlGenerateCli {
 
             ServiceSqlCall call = calls.get(i);
             String svc = safe(invokeString(call, "getServiceClass"));
-            String ns = safe(invokeString(call, "getMapperNamespace"));
-            String id = safe(invokeString(call, "getSqlId"));
+            String ns  = safe(invokeString(call, "getMapperNamespace"));
+            String id  = safe(invokeString(call, "getSqlId"));
 
             CURRENT_KEY = svc + " | " + ns + "." + id;
 
@@ -118,11 +193,13 @@ public class AliasSqlGenerateCli {
             // ✅ 2) 없으면 registry에서 fallback
             if (sqlText == null || sqlText.isBlank()) {
                 SqlStatement stmt = null;
-                try {
-                    stmt = sqlRegistry.get(ns, id);
-                } catch (Exception ignored) {
+                try { stmt = sqlRegistry.get(ns, id); } catch (Exception ignored) {}
+                if (stmt != null) {
+                    sqlText = stmt.getSqlText();
+                    if (logFallback) {
+                        System.out.println("[FALLBACK] " + CURRENT_KEY + " <= " + safe(stmt.getMapperFile()));
+                    }
                 }
-                if (stmt != null) sqlText = stmt.getSqlText();
             }
 
             if (sqlText == null || sqlText.isBlank()) {
@@ -185,6 +262,184 @@ public class AliasSqlGenerateCli {
         System.out.println("[DONE] totalElapsed=" + ms(t0) + "ms");
         System.out.println("==================================================");
     }
+
+    // ------------------------------------------------------------
+    // ✅ baseDir / system / sqlsDir resolve
+    // ------------------------------------------------------------
+
+    private static void applyBaseDirPropertyIfPresent(Map<String, String> argv) {
+        String baseDirArg = trimToNull(argv.get("baseDir"));
+        if (baseDirArg == null) return;
+
+        // JVM -D가 이미 있으면 우선
+        if (!isBlank(System.getProperty(PROP_BASE_DIR))) return;
+
+        // CLI --baseDir 는 "현재 작업 디렉터리(user.dir)" 기준으로 해석
+        Path bd = resolveAgainstUserDir(baseDirArg);
+        System.setProperty(PROP_BASE_DIR, bd.toString());
+    }
+
+    private static void ensureBaseDirProperty(Path baseDir) {
+        if (isBlank(System.getProperty(PROP_BASE_DIR)) && baseDir != null) {
+            System.setProperty(PROP_BASE_DIR, baseDir.toString());
+        }
+    }
+
+    private static String resolveSystem(Map<String, String> argv) {
+        // 1) CLI --system
+        String s = trimToNull(argv.get("system"));
+        if (s != null) return s;
+
+        // 2) JVM -Doasys.migration.system
+        s = trimToNull(System.getProperty(PROP_SYSTEM));
+        if (s != null) return s;
+
+        // 3) path 자동추론: csv/mapping/sqlsDir 에 systems/<system>/... 가 있으면 추론
+        s = inferSystemFromPaths(
+                argv.get("csv"),
+                argv.get("mapping"),
+                argv.get("sqlsDir")
+        );
+        return trimToNull(s);
+    }
+
+    private static void ensureSystemProperty(String system) {
+        if (system == null) return;
+        if (isBlank(System.getProperty(PROP_SYSTEM))) {
+            System.setProperty(PROP_SYSTEM, system);
+        }
+    }
+
+    private static Path resolveSqlsDir(Path baseDir, String system, Map<String, String> argv) {
+        // 우선순위: JVM -D > CLI --sqlsDir > 기본
+        String raw = trimToNull(System.getProperty(PROP_SQLS_DIR));
+        if (raw == null) raw = trimToNull(argv.get("sqlsDir"));
+
+        if (raw == null) {
+            raw = (system != null) ? ("systems/" + system + "/sqls") : "sqls";
+        }
+
+        return resolvePath(baseDir, raw);
+    }
+
+    private static void ensureSqlsDirProperty(Path sqlsDir) {
+        if (sqlsDir == null) return;
+        // JVM -D가 이미 있으면 그대로 존중(덮어쓰지 않음)
+        if (isBlank(System.getProperty(PROP_SQLS_DIR))) {
+            System.setProperty(PROP_SQLS_DIR, sqlsDir.toString());
+        }
+    }
+
+    private static String inferSystemFromPaths(String... paths) {
+        if (paths == null) return null;
+        for (String p : paths) {
+            String sys = inferSystemFromPath(p);
+            if (sys != null) return sys;
+        }
+        return null;
+    }
+
+    private static String inferSystemFromPath(String raw) {
+        if (raw == null) return null;
+        String s = raw.trim();
+        if (s.isEmpty()) return null;
+
+        // file: URI면 path 부분만 보기
+        if (s.startsWith("file:")) {
+            try {
+                Path p = Path.of(URI.create(s));
+                s = p.toString();
+            } catch (Exception ignored) {}
+        }
+
+        String n = s.replace('\\', '/');
+        String lower = n.toLowerCase(Locale.ROOT);
+
+        int idx = lower.indexOf("/systems/");
+        if (idx < 0) {
+            // 상대경로로 "systems/..." 형태
+            if (lower.startsWith("systems/")) idx = -1;
+            else return null;
+        }
+
+        String cut = (idx >= 0) ? n.substring(idx + "/systems/".length()) : n.substring("systems/".length());
+        // cut = "<system>/..."
+        int slash = cut.indexOf('/');
+        if (slash <= 0) return null;
+
+        String sys = cut.substring(0, slash).trim();
+        if (sys.isEmpty()) return null;
+
+        // 시스템명은 안전하게 (영문/숫자/대시/언더스코어)만 허용
+        if (!sys.matches("[A-Za-z0-9_-]{1,40}")) return null;
+        return sys;
+    }
+
+    private static Path resolveBaseDir() {
+        // 1) -Doasys.migration.baseDir
+        String baseDir = System.getProperty(PROP_BASE_DIR);
+        if (!isBlank(baseDir)) {
+            try { return Path.of(baseDir).toAbsolutePath().normalize(); }
+            catch (Exception ignored) {}
+        }
+
+        // 2) jar 파일 위치(라이브러리로 로딩된 경우 포함)
+        try {
+            var cs = AliasSqlGenerateCli.class.getProtectionDomain().getCodeSource();
+            if (cs != null && cs.getLocation() != null) {
+                Path codePath = Path.of(cs.getLocation().toURI()).toAbsolutePath().normalize();
+                String p = codePath.toString().toLowerCase(Locale.ROOT);
+                if (Files.isRegularFile(codePath) && p.endsWith(".jar")) {
+                    Path parent = codePath.getParent();
+                    if (parent != null) return parent.toAbsolutePath().normalize();
+                }
+            }
+        } catch (Exception ignored) {}
+
+        // 3) fallback: 현재 작업 디렉터리
+        return Path.of(System.getProperty("user.dir", ".")).toAbsolutePath().normalize();
+    }
+
+    private static Path resolveAgainstUserDir(String raw) {
+        Path p = Path.of(raw.trim());
+        if (p.isAbsolute()) return p.toAbsolutePath().normalize();
+        return Path.of(System.getProperty("user.dir", ".")).resolve(p).toAbsolutePath().normalize();
+    }
+
+    private static Path resolvePath(Path baseDir, String input) {
+        if (input == null) return baseDir;
+        String s = input.trim();
+
+        if (s.startsWith("file:")) {
+            try { return Path.of(URI.create(s)).toAbsolutePath().normalize(); }
+            catch (Exception ignored) {}
+        }
+
+        Path p = Path.of(s);
+        if (p.isAbsolute()) return p.toAbsolutePath().normalize();
+        return baseDir.resolve(p).toAbsolutePath().normalize();
+    }
+
+    private static void validateFileExists(Path p, String label) {
+        if (p == null) throw new IllegalArgumentException(label + " is null");
+        if (!Files.exists(p) || !Files.isRegularFile(p)) {
+            throw new IllegalStateException("File not found: " + p.toAbsolutePath() + " (" + label + ")");
+        }
+    }
+
+    private static String trimToNull(String s) {
+        if (s == null) return null;
+        String t = s.trim();
+        return t.isEmpty() ? null : t;
+    }
+
+    private static boolean isBlank(String s) {
+        return s == null || s.trim().isEmpty();
+    }
+
+    // ------------------------------------------------------------
+    // existing util/logging
+    // ------------------------------------------------------------
 
     private static void startHeartbeat(int total) {
         Thread t = new Thread(() -> {
@@ -325,7 +580,6 @@ public class AliasSqlGenerateCli {
             String outputName;
 
             if (alias != null && !alias.isBlank()) {
-                // 함수명/기타 토큰이 alias로 붙는 경우(예: AS F_OPEN_EDIT) → expr 내부 컬럼ID를 우선
                 if (inferredFromExpr != null && !looksLikeColumnId(alias)) {
                     outputName = inferredFromExpr;
                 } else if (inferredFromExpr != null && looksLikeColumnId(inferredFromExpr) && looksLikeColumnId(alias)
@@ -503,7 +757,6 @@ public class AliasSqlGenerateCli {
         return true;
     }
 
-    // ✅ 중복 없이 1개만 유지
     private static List<String> splitTopLevelByComma(String s) {
         return splitTopLevelByComma0(s);
     }

@@ -1,1 +1,0 @@
-UPDATE TBAWUSYMFSA001M SET AUTHRT_SECD = #{authDvsnCd} /* 권한구분코드 */,  AUTH_ID = #{authId},  LAST_USER_ID = #{ssUsrId} /* 최종사용자아이디 */,  FNL_DEAL_DPT_CD = #{ssDptCd} /* 최종처리부서코드 */,  LAST_MENU_ID = #{ssMnuId} /* 최종메뉴아이디 */,  FNL_MDF_DH = SYSDATE /* 최종수정일시 */WHERE SRNO = #{FRS_MDM_SQNO}

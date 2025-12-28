@@ -1,3 +1,0 @@
-/* * 예상이익금배당지급자 * 아래부분 */ SELECT COUNT(MOUI_NO) AS MOUI_NO,
-    SUM(DVD_AM) AS DVD_AM
-FROM TBCSPNBK402M WHERE DVD_YR =#dvdYr#

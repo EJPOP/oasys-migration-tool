@@ -1,5 +1,6 @@
 package oasys.migration.cli;
 
+import oasys.migration.alias.AliasSqlFileWriter;
 import oasys.migration.callchain.ServiceSqlCall;
 import oasys.migration.callchain.ServiceSqlXrefLoader;
 import oasys.migration.sql.SqlStatement;
@@ -9,6 +10,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import java.io.OutputStream;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.*;
@@ -19,14 +21,61 @@ public class MigrationVerifyCli {
     private static volatile String CURRENT_KEY = "";
     private static final AtomicInteger CURRENT_INDEX = new AtomicInteger(0);
 
+    // ============================================================
+    // ✅ runtime properties
+    // ============================================================
+    private static final String PROP_BASE_DIR = "oasys.migration.baseDir";
+    private static final String PROP_SYSTEM   = "oasys.migration.system";
+    private static final String PROP_SQLS_DIR = "oasys.migration.sqlsDir";
+
     public static void main(String[] args) {
 
         long t0 = System.nanoTime();
         Map<String, String> argv = parseArgs(args);
 
-        String callchainCsv = argv.getOrDefault("csv", "mapping/service_sql_xref.csv");
-        Path tobeDir = Path.of(argv.getOrDefault("tobeDir", "output/tobe-sql"));
-        Path resultXlsx = Path.of(argv.getOrDefault("result", "output/meta-compare.xlsx"));
+        // ============================================================
+        // ✅ CLI로도 baseDir/system/sqlsDir 를 지정 가능하게 (JVM -D 우선)
+        //   --baseDir=.
+        //   --system=best
+        //   --sqlsDir=systems/best/sqls
+        // ============================================================
+        applyRuntimeProperties(argv);
+
+        // ============================================================
+        // ✅ baseDir: jar(라이브러리) 위치 폴더 기준으로 파일/디렉터리 해석
+        //  - override: -Doasys.migration.baseDir=...
+        // ============================================================
+        Path baseDir = resolveBaseDir();
+        System.setProperty(PROP_BASE_DIR, baseDir.toString());
+
+        String system = trimToNull(argv.getOrDefault("system", System.getProperty(PROP_SYSTEM)));
+        applySqlsDirPropertyIfNeeded(argv, baseDir, system);
+
+        // ✅ system 프리셋 기반 기본경로
+        String defaultCsv = (system != null)
+                ? ("systems/" + system + "/mapping/service_sql_xref.csv")
+                : "mapping/service_sql_xref.csv";
+
+        String defaultTobeDir = (system != null)
+                ? ("output/" + system + "/tobe-sql")
+                : "output/tobe-sql";
+
+        String defaultResult = (system != null)
+                ? ("output/" + system + "/meta-compare.xlsx")
+                : "output/meta-compare.xlsx";
+
+        // ✅ 입력/출력 경로(baseDir 기준으로 해석)
+        Path callchainCsvPath = resolveInputFile(
+                baseDir,
+                argv.get("csv"),
+                (system != null ? "systems/" + system + "/mapping/service_sql_xref.csv" : null),
+                defaultCsv,
+                "service_sql_xref.csv",
+                "mapping/service_sql_xref.csv"
+        );
+
+        Path tobeDir = resolvePath(baseDir, argv.getOrDefault("tobeDir", defaultTobeDir));
+        Path resultXlsx = resolvePath(baseDir, argv.getOrDefault("result", defaultResult));
 
         int max = parseInt(argv.get("max"), -1);
         int logEvery = parseInt(argv.get("logEvery"), 200);
@@ -34,7 +83,10 @@ public class MigrationVerifyCli {
 
         System.out.println("==================================================");
         System.out.println("[START] Migration meta compare (NO EXEC)");
-        System.out.println("[CONF] csv      = " + callchainCsv);
+        System.out.println("[CONF] baseDir  = " + baseDir.toAbsolutePath());
+        System.out.println("[CONF] system   = " + (system == null ? "" : system));
+        System.out.println("[CONF] sqlsDir  = " + safe(System.getProperty(PROP_SQLS_DIR)));
+        System.out.println("[CONF] csv      = " + callchainCsvPath.toAbsolutePath());
         System.out.println("[CONF] tobeDir  = " + tobeDir.toAbsolutePath());
         System.out.println("[CONF] result   = " + resultXlsx.toAbsolutePath());
         System.out.println("[CONF] max      = " + max);
@@ -54,7 +106,7 @@ public class MigrationVerifyCli {
         long tCsv0 = System.nanoTime();
         System.out.println("[STEP2] loading xref csv...");
         ServiceSqlXrefLoader xrefLoader = new ServiceSqlXrefLoader();
-        List<ServiceSqlCall> calls = xrefLoader.load(callchainCsv);
+        List<ServiceSqlCall> calls = xrefLoader.load(callchainCsvPath.toString());
         System.out.println("[STEP2] xref csv loaded. size=" + calls.size() + ", elapsed=" + ms(tCsv0) + "ms");
 
         if (max > 0 && calls.size() > max) {
@@ -198,28 +250,56 @@ public class MigrationVerifyCli {
     // ----------------------------------------------------------------
     // Reading TOBE SQL file (matches AliasSqlFileWriter path rule)
     // ----------------------------------------------------------------
-
     private static String readTobeSqlFile(Path tobeDir, String serviceClass, String namespace, String sqlId) {
         if (tobeDir == null) return null;
+
         try {
-            Path p = tobeDir
-                    .resolve(toSafePath(serviceClass))
-                    .resolve(toSafePath(namespace))
-                    .resolve(toSafePath(sqlId) + ".sql");
-            if (!Files.exists(p)) return null;
-            return Files.readString(p, StandardCharsets.UTF_8);
+            // 1) 현재 설정된 레이아웃으로 먼저 시도
+            Path p = AliasSqlFileWriter.resolveOutFile(tobeDir, serviceClass, namespace, sqlId);
+            if (Files.exists(p)) {
+                return Files.readString(p, StandardCharsets.UTF_8);
+            }
+
+            // 2) 없으면 반대 레이아웃도 시도(기존 산출물 호환)
+            AliasSqlFileWriter.OutLayout cur = AliasSqlFileWriter.getOutLayout();
+            AliasSqlFileWriter.OutLayout alt =
+                    (cur == AliasSqlFileWriter.OutLayout.SIMPLE)
+                            ? AliasSqlFileWriter.OutLayout.LEGACY
+                            : AliasSqlFileWriter.OutLayout.SIMPLE;
+
+            Path p2 = AliasSqlFileWriter.resolveOutFile(tobeDir, serviceClass, namespace, sqlId, alt);
+            if (Files.exists(p2)) {
+                return Files.readString(p2, StandardCharsets.UTF_8);
+            }
+
+            return null;
         } catch (Exception e) {
             return null;
         }
     }
 
-    private static String toSafePath(String s) {
-        if (s == null) return "_";
-        String t = s.trim();
-        if (t.isEmpty()) return "_";
-        t = t.replace('.', '/').replace(':', '/');
-        t = t.replaceAll("[\\\\?%\\*:|\"<>]", "_");
-        return t;
+    // ✅ AliasSqlFileWriter.toSafePath 규칙과 동일
+    private static String toSafePath(String raw, boolean allowSlash) {
+        if (raw == null || raw.isBlank()) return "_";
+
+        String s = raw.trim();
+
+        if (s.startsWith("file:/")) s = s.substring("file:/".length());
+        else if (s.startsWith("file:")) s = s.substring("file:".length());
+
+        s = s.replace('\\', '/');
+        s = s.replace('.', '/');
+
+        // Remove ':' from drive prefix like C:
+        s = s.replaceAll("(?i)^([a-z]):", "$1");
+
+        s = s.replaceAll("[:*?\"<>|]", "_");
+        s = s.replaceAll("\\s+", "_");
+        s = s.replaceAll("/+", "/");
+
+        if (!allowSlash) s = s.replace("/", "_");
+
+        return s.isBlank() ? "_" : s;
     }
 
     // ----------------------------------------------------------------
@@ -322,7 +402,6 @@ public class MigrationVerifyCli {
             String outputName;
 
             if (alias != null && !alias.isBlank()) {
-                // alias가 함수명/의미없는 값이면 expr 내부 COL로 강제 (요구사항 케이스 대응)
                 if (inferredFromExpr != null && !looksLikeColumnId(alias)) {
                     outputName = inferredFromExpr;
                 } else if (inferredFromExpr != null && looksLikeColumnId(inferredFromExpr) && looksLikeColumnId(alias)
@@ -1157,5 +1236,127 @@ public class MigrationVerifyCli {
         }
 
         return m;
+    }
+
+    // ============================================================
+    // ✅ baseDir 기반 경로 해석 (AliasSqlGenerateCli와 동일 계열)
+    // ============================================================
+
+    private static Path resolvePath(Path baseDir, String raw) {
+        if (raw == null || raw.isBlank()) return baseDir;
+
+        String s = raw.trim();
+
+        // file:/... URI 지원
+        if (s.startsWith("file:")) {
+            try {
+                return Path.of(URI.create(s)).toAbsolutePath().normalize();
+            } catch (Exception ignored) {
+                // fallthrough
+            }
+        }
+
+        Path p = Path.of(s);
+        if (!p.isAbsolute()) p = baseDir.resolve(p);
+        return p.toAbsolutePath().normalize();
+    }
+
+    private static Path resolveInputFile(Path baseDir, String raw, String... candidates) {
+        if (raw != null && !raw.isBlank()) {
+            return resolvePath(baseDir, raw.trim());
+        }
+
+        if (candidates != null) {
+            for (String c : candidates) {
+                if (c == null || c.isBlank()) continue;
+                Path p = resolvePath(baseDir, c.trim());
+                if (Files.exists(p)) return p;
+            }
+            for (String c : candidates) {
+                if (c != null && !c.isBlank()) return resolvePath(baseDir, c.trim());
+            }
+        }
+        return baseDir;
+    }
+
+    private static Path resolveBaseDir() {
+        // 1) override
+        String override = System.getProperty(PROP_BASE_DIR);
+        if (override != null && !override.isBlank()) {
+            try {
+                return Path.of(override).toAbsolutePath().normalize();
+            } catch (Exception ignored) {}
+        }
+
+        // 2) jar location
+        try {
+            var cs = MigrationVerifyCli.class.getProtectionDomain().getCodeSource();
+            if (cs != null && cs.getLocation() != null) {
+                Path codePath = Path.of(cs.getLocation().toURI()).toAbsolutePath().normalize();
+                String p = codePath.toString().toLowerCase(Locale.ROOT);
+
+                if (Files.isRegularFile(codePath) && p.endsWith(".jar")) {
+                    Path parent = codePath.getParent();
+                    if (parent != null) return parent.toAbsolutePath().normalize();
+                }
+            }
+        } catch (Exception ignored) {}
+
+        // 3) fallback
+        return Path.of(System.getProperty("user.dir", ".")).toAbsolutePath().normalize();
+    }
+
+    // ============================================================
+    // ✅ CLI로 runtime property 세팅 (JVM -D 우선)
+    // ============================================================
+
+    private static void applyRuntimeProperties(Map<String, String> argv) {
+        // baseDir
+        String baseDirArg = trimToNull(argv.get("baseDir"));
+        if (baseDirArg != null && isBlank(System.getProperty(PROP_BASE_DIR))) {
+            Path bd = resolveAgainstUserDir(baseDirArg);
+            System.setProperty(PROP_BASE_DIR, bd.toString());
+        }
+
+        // system
+        String systemArg = trimToNull(argv.get("system"));
+        if (systemArg != null && isBlank(System.getProperty(PROP_SYSTEM))) {
+            System.setProperty(PROP_SYSTEM, systemArg);
+        }
+        // sqlsDir은 baseDir 확정 이후에 처리(아래 applySqlsDirPropertyIfNeeded)
+    }
+
+    private static void applySqlsDirPropertyIfNeeded(Map<String, String> argv, Path baseDir, String system) {
+        // --sqlsDir가 있으면 그걸 우선(단, JVM -D가 이미 있으면 유지)
+        String sqlsDirArg = trimToNull(argv.get("sqlsDir"));
+        if (sqlsDirArg != null && isBlank(System.getProperty(PROP_SQLS_DIR))) {
+            Path sd = resolvePath(baseDir, sqlsDirArg);
+            System.setProperty(PROP_SQLS_DIR, sd.toString());
+            return;
+        }
+
+        // system만 주고 sqlsDir을 안 준 경우: systems/{system}/sqls 자동 세팅(존재하면)
+        if (isBlank(System.getProperty(PROP_SQLS_DIR)) && system != null) {
+            Path candidate = baseDir.resolve("systems").resolve(system).resolve("sqls").toAbsolutePath().normalize();
+            if (Files.isDirectory(candidate)) {
+                System.setProperty(PROP_SQLS_DIR, candidate.toString());
+            }
+        }
+    }
+
+    private static Path resolveAgainstUserDir(String raw) {
+        Path p = Path.of(raw.trim());
+        if (p.isAbsolute()) return p.toAbsolutePath().normalize();
+        return Path.of(System.getProperty("user.dir", ".")).resolve(p).toAbsolutePath().normalize();
+    }
+
+    private static String trimToNull(String s) {
+        if (s == null) return null;
+        String t = s.trim();
+        return t.isEmpty() ? null : t;
+    }
+
+    private static boolean isBlank(String s) {
+        return s == null || s.trim().isEmpty();
     }
 }

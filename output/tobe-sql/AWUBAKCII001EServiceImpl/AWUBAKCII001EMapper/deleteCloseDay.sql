@@ -1,1 +1,0 @@
-/* AWUBAKCII001EMapper.deleteCloseDay 휴관 해제 */ UPDATE TBAWUBAKCII001M SET HLDY_YN = 'N' WHERE VI_ID = #{viId}

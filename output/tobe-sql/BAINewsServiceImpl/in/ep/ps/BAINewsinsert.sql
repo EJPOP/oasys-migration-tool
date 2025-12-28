@@ -1,1 +1,0 @@
-INSERT INTO PTL_BAI_NEWS (NTT_ID /* 게시물아이디 */, BBS_ID /* 게시판아이디 */, NTT_NO /* 번호 */, NTT_SJ /* 제목 */, NTT_CN /* 내용 */, NTCR_NM /* 작성 */, FRST_REGIST_PNTTM /* 작성일자 */, MAIN_IMG_ID /* 메인이미지아이디 */, THUMB_IMG_ID /* 첨부이미지아이디 */, LIST_IMG_ID /* 리스트이미지아이디 */) VALUES ( #NTT_ID# ,#BBS_ID# ,#NTT_NO# ,#NTT_SJ# ,#NTT_CN# ,#NTCR_NM# ,SYSDATE ,#MAIN_IMG_ID# ,#THUMB_IMG_ID# ,#LIST_IMG_ID# )

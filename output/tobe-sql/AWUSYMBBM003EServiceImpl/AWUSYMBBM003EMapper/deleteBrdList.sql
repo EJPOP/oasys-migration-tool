@@ -1,1 +1,0 @@
-/* AWUSYMBBM003EMapper.deleteBrdList 통합게시판 삭제 */ UPDATE TBAWUSYMBBM002M SET USE_YN = 'N' /* 사용여부 */,  LAST_USER_ID = #{ssUsrId} /* 최종사용자아이디 */,  FNL_DEAL_DPT_CD = #{ssDptCd} /* 최종처리부서코드 */,  LAST_MENU_ID = #{ssMnuId} /* 최종메뉴아이디 */,  FNL_MDF_DH = SYSDATE /* 최종수정일시 */WHERE BRD_ID = #{brdId}

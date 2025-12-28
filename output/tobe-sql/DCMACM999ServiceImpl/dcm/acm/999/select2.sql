@@ -1,4 +1,0 @@
-SELECT F_ORG_INFO(CMO_INST_CD, '1') || '_' || F_ORG_INFO(BAI_ORG_CD, '1') || '_' || SYS_NM AS SRECS_FILE_NM /* 심사재심의파일명 */,
-    SYS_NM,
-    JRSD_INST_CD /* 소관기관코드 */
-FROM TBFAAAEA001M WHERE JRSD_INST_CD = #JRSD_INST_CD#;

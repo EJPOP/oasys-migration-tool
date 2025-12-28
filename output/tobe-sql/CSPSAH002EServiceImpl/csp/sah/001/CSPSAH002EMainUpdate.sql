@@ -1,1 +1,0 @@
-UPDATE TBCSPSAH001M SET CLM_NM = #CLM_NM# /* 청탁피청구인명 */,  BBS_CN = #BBS_CN# /* 게시판내용 */,  CVLCPT_DOC_ID = #CVLCPT_DOC_ID# /* 민원문서아이디 */,  LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */WHERE APL_NO = #APL_NO#

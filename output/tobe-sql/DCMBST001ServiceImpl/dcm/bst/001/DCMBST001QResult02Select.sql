@@ -1,7 +1,0 @@
-/*국회감사요구*/ SELECT NVL(STTC_NM_6,0) + NVL(STTC_NM_7,0) + NVL(STTC_NM_8,0) AS STTC_NM_6,
-    /*감사실시중*/ NVL(STTC_NM_8 ,0) AS STTC_NM_8,
-    /*실지감사*/ NVL(STTC_NM_11 ,0) AS STTC_NM_11,
-    /*시행(국회통보)*/ NVL(STTC_NM_9,0) + NVL(STTC_NM_10,0) AS STTC_NM_9,
-    /*감사실시중*/ NVL(STTC_NM_12,0) AS STTC_NM_12,
-    /*기한경과*/ NVL(STTC_NM_13,0) AS STTC_NM_13 /* 연장 */
-FROM TBDCMBST002M WHERE STATS_YR =#STATS_YR# AND STTC_MN= #strMn# AND STTC_WEK_NO=#strWekNo# AND STTC_DVSN_CD=#strSttcDvsnCd#

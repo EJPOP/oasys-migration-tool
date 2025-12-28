@@ -1,6 +1,0 @@
-SELECT RGN_CD /* 지역코드 */,
-    F_CODE_NM('1000001',RGN_CD) AS F_CODE_NM,
-    DST_NM /* 출발역명 */,
-    CRTR_DST_RMRK_CN /* 기준출발역비고내용 */,
-    MDFCN_YMD /* 수정일자 */
-FROM TB_BADDED015B A, TBDCMACM013C B WHERE 1=1 AND B.CMM_CD_DVSN_CD ='1000001' AND A.RGN_CD = B.CD AND B.CD_NM LIKE '%'||#strRgnNm#||'%' /*지역코드*/ ORDER BY MDFCN_YMD

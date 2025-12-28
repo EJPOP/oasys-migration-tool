@@ -1,1 +1,0 @@
-UPDATE TBAWUSYMBBM007M SET TPOF_BKMK_ANS_CN = #{postTxtCode} /* 제보즐겨찾기답변내용 */,  ANS_YN = 'Y' WHERE BRD_ID = #{brdId} AND PST_NO = #{postNo}

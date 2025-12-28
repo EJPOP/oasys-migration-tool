@@ -1,6 +1,0 @@
-SELECT CMM_CD_DVSN_CD,
-    CD,
-    CD_NM,
-    #strYear# AS CVLCPT_RCPT_YR /* 민원접수년도 */,
-    SUBSTR(CD, 3, 5) AS SUBSTR
-FROM TBDCMACM013C WHERE 1=1 AND CMM_CD_DVSN_CD = #strCdDvsn# AND USE_YN = NVL(#strUseYn#,'Y') AND SUBSTR(CD,1,2) LIKE SUBSTR(#strYear#,3,2)||'%' ORDER BY CD

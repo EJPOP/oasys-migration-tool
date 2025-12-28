@@ -1,1 +1,0 @@
-INSERT INTO MMS_CONTENTS_INFO (CONT_SEQ, FILE_CNT, MMS_BODY, MMS_SUBJECT) VALUES ( #CONT_SEQ# , 1 , #SMS_TXT#||#ACP_YR#||'-'||DECODE(#REQ_DVSN_CD#,'2','국민','공익')||'-'||#CVPT_ACP_NO# , '감사원 감사청구 문자 통보' )

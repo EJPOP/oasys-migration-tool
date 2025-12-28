@@ -1,1 +1,0 @@
-UPDATE TBAWUEDKABM002M SET ATCH_FILE_ID = #{attFlId} /* ENAIS게시물첨부파일아이디 */WHERE SRNO = #{docSrno}

@@ -1,6 +1,0 @@
-SELECT /* CSPNBK225PSmsSendMouiListSelect */ D1.MOUI_NO,
-    D1.TRGT_NOP_ENO /* 대상인원직원전산번호 */,
-    D2.USER_NM /* 사용자명 */,
-    D2.CRU_TELNO /* 부패전화번호 */,
-    D2.CNSTN_MBCMT_HOME_TELNO /* 자문위원자택전화번호 */
-FROM TBCSPNBK001M D1 , TBDCMACM001M D2 WHERE D1.TRGT_NOP_ENO = D2.TRGT_NOP_ENO AND D1.SCS_YN = 'N' AND D1.MOUI_NO IN #arrMouiNo[]# ORDER BY D1.MOUI_NO

@@ -1,1 +1,0 @@
-UPDATE PTL_BAI_NEWS SET NTT_SJ = #{nttSj} , NTT_CN = #{nttCn} , FRST_REGIST_PNTTM = replace(#{frstRegistDt},'-','') , DVSN_CD = #{dvsnCd} /* 사용자이력구분코드 */WHERE NTT_ID = #{nttId} AND BBS_ID = 'BBSMSTR_100000000002'

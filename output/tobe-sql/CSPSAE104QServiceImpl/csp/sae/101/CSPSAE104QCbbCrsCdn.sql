@@ -1,3 +1,0 @@
-SELECT CRS_CDN /* 과정기수 */,
-    CRS_CDN /* 과정기수 */
-FROM TBCSPSAE201D WHERE EDU_BGNG_YMD >= #strFromYm# AND EDU_END_YMD <= #strToYm# AND CRS_CD = #strEDU_CRS_CD# ORDER BY CD

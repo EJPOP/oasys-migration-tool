@@ -1,2 +1,0 @@
-SELECT *
-FROM TBDCMACM017M WHERE 1=1 PRGRM_ID LIKE '%'|| #strPgmId# ||'%' TASK_SECD LIKE '%'||#strTskCatCd#||'%' FUNC_CAT_CD LIKE '%'||#strFuncCatCd#||'%' PGM_NM LIKE '%'||#strPgmNm# ||'%' ORDER BY PGM_NM

@@ -1,8 +1,0 @@
-SELECT EVL_YR AS EVL_YR /* 평가년도 */,
-    HLYR_DVSN_CD AS HLYR_DVSN_CD /* 반기구분코드 */,
-    HNDL_PRD_CD AS HNDL_PRD_CD /* 처리기간코드 */,
-    HNDL_PRD_DVSN_CD AS HNDL_PRD_DVSN_CD /* 처리기간구분코드 */,
-    HNDL_PRD_DCN AS HNDL_PRD_DCN /* 처리기간일자 */,
-    DLAY_DT_NM AS DLAY_DT_NM /* 지연일명 */,
-    TO_CHAR(ASP_RTE,'FM999.00') AS TO_CHAR /* 가감점율 */
-FROM TBCSPAOE012M WHERE 1=1 AND EVL_YR = #strEvlYr# AND HLYR_DVSN_CD = #strHlyrDvsnCd# AND HNDL_PRD_DVSN_CD = #strHndlPrdDvsnCd# ORDER BY TO_NUMBER(SUBSTR(HNDL_PRD_CD,3))

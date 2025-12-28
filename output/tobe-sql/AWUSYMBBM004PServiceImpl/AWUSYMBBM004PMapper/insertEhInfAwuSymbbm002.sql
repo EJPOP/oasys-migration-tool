@@ -1,1 +1,0 @@
-INSERT INTO EH_INF_AWU_SYMBBM002 (LINK_SQNO, CLM_LINK_TRRC_SECD, BLL_LINK_SECD, RSCH_RPTP_BBS_ID, BRD_NM, BRD_DES_TXT, USE_YN /* 사용여부 */, ATT_FL_USE_YN, NT_YN, DVSN_USE_YN, USER_HSTRY_SECD, FRST_REG_DT, LAST_MDFCN_DT) VALUES ( #{ifSeq} ,'SND' ,#{conDvsnCd} ,#{brdId} ,#{brdNm} , #{brdDesTxt} , #{useYn} , #{attFlUseYn} , #{ntYn} , #{dvsnUseYn} , #{dvsnCd} , SYSDATE , SYSDATE )

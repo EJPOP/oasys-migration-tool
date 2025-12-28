@@ -1,1 +1,0 @@
-/* AWUSYMBBM001EMapper.deleteCommonTemplete 템플릿 삭제 */ DELETE TBAWUSYMBBM001M WHERE TMPL_ID = #{tmplId}

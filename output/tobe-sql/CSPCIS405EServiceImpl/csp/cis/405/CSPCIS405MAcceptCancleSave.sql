@@ -1,1 +1,0 @@
-UPDATE /*CSPCIS405MAcceptCancleSave*/ TBCSPCIS404M T1 SET T1.CRU_PRCS_STTS_SECD = '1' /* 부패처리상태구분코드 */, T1.TPOF_BKMK_ANS_CN = NULL /* 제보즐겨찾기답변내용 */, T1.LAST_USER_ID = #LAST_USER_ID# /* 최종사용자아이디 */, T1.LAST_PRCS_DEPT_CD = #LAST_PRCS_DEPT_CD# /* 최종처리부서코드 */, T1.LAST_MENU_ID = #LAST_MENU_ID# /* 최종메뉴아이디 */, T1.LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */WHERE T1.FRS_MDM_SQNO = #FRS_MDM_SQNO#

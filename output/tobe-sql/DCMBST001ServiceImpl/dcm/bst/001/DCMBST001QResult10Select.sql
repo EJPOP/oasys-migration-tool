@@ -1,5 +1,0 @@
-SELECT NVL(STTC_NM_5,0) AS STTC_NM_5,
-    /*부정청탁 신규접수*/ NVL(STTC_NM_6,0) AS STTC_NM_6,
-    /*부정청탁 처리완료*/ NVL(STTC_NM_10,0) + NVL(STTC_NM_11,0) AS STTC_NM_10,
-    /*부정청탁 미처리*/ NVL(STTC_NM_11,0) AS STTC_NM_11 /* 부정청탁 기한경과 */
-FROM TBDCMBST002M T2 WHERE STATS_YR = #STATS_YR# AND STTC_MN = #strMn# AND STTC_WEK_NO = #strWekNo# AND STTC_DVSN_CD = #strSttcDvsnCd# AND STTC_SNO = 7

@@ -1,1 +1,0 @@
-UPDATE TBCSPIIT003M SET PRCS_SECD = 'Y' /* 처리구분코드 */,  PRCS_YMD = TO_CHAR(SYSDATE,'yyyymmdd') /* 정부구매카드처리일자 */,  USE_DVSN_NO = #USE_DVSN_NO# ,  LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */,  LAST_USER_ID = #LAST_USER_ID# /* 최종사용자아이디 */,  LAST_PRCS_DEPT_CD = #LAST_PRCS_DEPT_CD# /* 최종처리부서코드 */,  LAST_MENU_ID = #LAST_MENU_ID# /* 최종메뉴아이디 */WHERE REGI_CHG_RQS_SNO = #REGI_CHG_RQS_SNO#

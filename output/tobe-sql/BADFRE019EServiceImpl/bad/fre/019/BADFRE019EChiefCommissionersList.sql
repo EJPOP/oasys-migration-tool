@@ -1,4 +1,0 @@
-SELECT TRGT_NOP_ENO /* 대상인원직원전산번호 */,
-    USER_ID /* 사용자아이디 */,
-    USER_NM /* 사용자명 */
-FROM TBDCMACM001M WHERE JBPS_CD ='0010600' AND HDOF_SECD = 'AAA'

@@ -1,1 +1,0 @@
-UPDATE TBDCMACM065D3 SET TRGT_NOP_ENO = #TRGT_NOP_ENO# /* 전산번호 */ , USER_NM = #USER_NM# /* 사용자명 */ , JBGD_SECD = #JBGD_SECD# /* 직급코드 */ , SRECS_DEPT_CD = #SRECS_DEPT_CD# /* 부서코드 */ , EPRT_SPH = #EPRT_SPH# /* 전문분야 */ , KBN = #KBN# /* 전문분야 */ WHERE TRGT_NOP_ENO = #TRGT_NOP_ENO#

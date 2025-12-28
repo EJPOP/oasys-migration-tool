@@ -1,3 +1,0 @@
-SELECT EVL_INDEX_NM /* 평가지표명 */,
-    WGT_RTE /* 비중 */
-FROM TBCSPAOE002M WHERE 1=1 AND EVL_YR = #strEvlYr# AND HLYR_DVSN_CD = #strHlyrDvsnCd#

@@ -1,2 +1,0 @@
-INSERT INTO TBAEPGKM009D (EVL_CLU_CD /* 평가항목코드 */, EVL_RK_CD /* 평가등급코드 */, EVL_RK_NM /* 평가등급명 */, EVL_SC /* 평가점수 */, USE_YN /* 사용여부 */, FRST_USER_ID /* 최초사용자ID */, LAST_USER_ID /* 최종사용자ID */, LAST_PRCS_DEPT_CD /* 최종거래부서코드 */, LAST_MENU_ID /* 최종메뉴ID */, FRST_REG_DT /* 최초등록일시 */, LAST_MDFCN_DT /* 최종수정일시 */) VALUES ( #EVL_CLU_CD# ,(SELECT NVL(MAX(EVL_RK_CD), 0) + 1
-FROM TBAEPGKM009D WHERE EVL_CLU_CD = #EVL_CLU_CD#) ,#EVL_RK_NM# ,#EVL_SC# ,#USE_YN# ,#FRT_USR_ID# ,#FNL_USR_ID# ,#FNL_DEAL_DPT_CD# ,#FNL_MNU_ID# ,SYSDATE ,SYSDATE )

@@ -1,1 +1,0 @@
-INSERT INTO TBCSPLTT002M (TK_YE /*생각연도*/, TK_SLN /*생각연번*/, ATT_FL_DVSN_CD /*첨부파일구분코드*/, CVLCPT_DOC_ID /*첨부파일문서ID*/, ADT_PLAN_DOC_TPCD /*문서유형코드*/, FRST_REG_DT /*최초등록일시*/, LAST_MDFCN_DT /*최종수정일시*/) VALUES ( #TK_YE# /*생각연도*/ ,#TK_SLN# /*생각연번*/ ,'1' /*첨부파일구분코드*/ ,#DOC_ID# /*첨부파일문서ID*/ ,'' /*문서유형코드*/ ,SYSDATE /*최초등록일시*/ ,SYSDATE /*최종수정일시*/ )

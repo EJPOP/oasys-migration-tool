@@ -8,6 +8,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ColumnMappingXlsxLoader {
@@ -66,7 +67,8 @@ public class ColumnMappingXlsxLoader {
 
     /**
      * 1) file:/... URI 또는 파일시스템 경로가 존재하면 그걸 사용
-     * 2) 아니면 classpath 리소스로 로딩
+     * 2) ✅ 상대경로면 baseDir(=jar 위치)/상대경로 를 우선 탐색
+     * 3) 아니면 classpath 리소스로 로딩
      */
     private InputStream openStream(String location) throws Exception {
         if (location == null || location.isBlank()) {
@@ -84,6 +86,26 @@ public class ColumnMappingXlsxLoader {
         }
 
         Path p = Path.of(loc);
+
+        // ✅ 상대경로면 baseDir 기준으로 먼저 찾는다
+        if (!p.isAbsolute()) {
+            Path baseDir = resolveBaseDir();
+            Path pb = baseDir.resolve(p).toAbsolutePath().normalize();
+            if (Files.exists(pb)) {
+                return Files.newInputStream(pb);
+            }
+
+            // 호환: mapping/column_mapping.xlsx 로 왔지만 baseDir 루트에 파일이 있는 경우도 커버
+            String fn = p.getFileName() == null ? null : p.getFileName().toString();
+            if (fn != null && !fn.isBlank()) {
+                Path alt = baseDir.resolve(fn).toAbsolutePath().normalize();
+                if (Files.exists(alt)) {
+                    return Files.newInputStream(alt);
+                }
+            }
+        }
+
+        // 기존 동작 유지: 현재 작업 디렉터리(user.dir) 기준 탐색
         if (Files.exists(p)) {
             return Files.newInputStream(p);
         }
@@ -98,6 +120,36 @@ public class ColumnMappingXlsxLoader {
             );
         }
         return is;
+    }
+
+    private static Path resolveBaseDir() {
+
+        // 1) explicit override
+        String baseDir = System.getProperty("oasys.migration.baseDir");
+        if (baseDir != null && !baseDir.isBlank()) {
+            try {
+                return Path.of(baseDir).toAbsolutePath().normalize();
+            } catch (Exception ignored) {
+            }
+        }
+
+        // 2) jar location (when running as jar / library)
+        try {
+            var cs = ColumnMappingXlsxLoader.class.getProtectionDomain().getCodeSource();
+            if (cs != null && cs.getLocation() != null) {
+                Path codePath = Path.of(cs.getLocation().toURI()).toAbsolutePath().normalize();
+                String lower = codePath.toString().toLowerCase(Locale.ROOT);
+
+                if (Files.isRegularFile(codePath) && lower.endsWith(".jar")) {
+                    Path parent = codePath.getParent();
+                    if (parent != null) return parent.toAbsolutePath().normalize();
+                }
+            }
+        } catch (Exception ignored) {
+        }
+
+        // 3) fallback
+        return Path.of(System.getProperty("user.dir", ".")).toAbsolutePath().normalize();
     }
 
     private String get(Row row, int idx) {

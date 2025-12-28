@@ -2,7 +2,10 @@ package oasys.migration.alias;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ColumnMappingRegistry {
@@ -19,8 +22,11 @@ public class ColumnMappingRegistry {
     private final Map<String, String> asisToTobeTableId = new HashMap<>();
 
     public ColumnMappingRegistry(String xlsxResourcePath) {
+
+        String resolvedPath = resolveMappingXlsxPath(xlsxResourcePath);
+
         ColumnMappingXlsxLoader loader = new ColumnMappingXlsxLoader(); // no-arg constructor
-        this.mappingMap = loader.load(xlsxResourcePath);                // load(String)
+        this.mappingMap = loader.load(resolvedPath);                    // load(String)
 
         // 인덱스 구성
         for (ColumnMapping m : mappingMap.values()) {
@@ -115,5 +121,68 @@ public class ColumnMappingRegistry {
         }
 
         return null;
+    }
+
+    // ============================================================
+    // ✅ jar 위치(baseDir) 기준: column_mapping.xlsx 경로 해석
+    // ============================================================
+
+    private static String resolveMappingXlsxPath(String raw) {
+
+        Path baseDir = resolveBaseDir();
+
+        // 값이 없으면 기본 후보를 순서대로 탐색
+        if (raw == null || raw.isBlank()) {
+            Path p1 = baseDir.resolve("column_mapping.xlsx");
+            if (Files.exists(p1)) return p1.toAbsolutePath().normalize().toString();
+
+            Path p2 = baseDir.resolve("mapping").resolve("column_mapping.xlsx");
+            if (Files.exists(p2)) return p2.toAbsolutePath().normalize().toString();
+
+            return p2.toAbsolutePath().normalize().toString();
+        }
+
+        // 값이 있으면: 상대경로는 baseDir 기준
+        Path p = Path.of(raw.trim());
+        if (!p.isAbsolute()) p = baseDir.resolve(p);
+        p = p.toAbsolutePath().normalize();
+
+        // 지정 경로가 없으면 baseDir 루트 파일도 한 번 더 탐색 (호환성)
+        if (!Files.exists(p)) {
+            Path alt = baseDir.resolve("column_mapping.xlsx");
+            if (Files.exists(alt)) return alt.toAbsolutePath().normalize().toString();
+        }
+
+        return p.toString();
+    }
+
+    private static Path resolveBaseDir() {
+
+        // 1) explicit override
+        String baseDir = System.getProperty("oasys.migration.baseDir");
+        if (baseDir != null && !baseDir.isBlank()) {
+            try {
+                return Path.of(baseDir).toAbsolutePath().normalize();
+            } catch (Exception ignored) {
+            }
+        }
+
+        // 2) jar location (when running as jar / library)
+        try {
+            var cs = ColumnMappingRegistry.class.getProtectionDomain().getCodeSource();
+            if (cs != null && cs.getLocation() != null) {
+                Path codePath = Path.of(cs.getLocation().toURI()).toAbsolutePath().normalize();
+                String lower = codePath.toString().toLowerCase(Locale.ROOT);
+
+                if (Files.isRegularFile(codePath) && lower.endsWith(".jar")) {
+                    Path parent = codePath.getParent();
+                    if (parent != null) return parent.toAbsolutePath().normalize();
+                }
+            }
+        } catch (Exception ignored) {
+        }
+
+        // 3) fallback
+        return Path.of(System.getProperty("user.dir", ".")).toAbsolutePath().normalize();
     }
 }

@@ -1,6 +1,0 @@
-SELECT PST_NO /* 게시물번호 */,
-    RSCH_ASMT_TTL /* 연구과제제목 */,
-    WRT_CN /* 작성내용 */,
-    TO_CHAR(TO_DATE(WRT_YMD,'YYYY-MM-DD'),'YYYY-MM-DD') AS WRT_YMD /* 작성일자 */,
-    WRTR_NM /* 작성자명 */
-FROM TBAWUPRKANS001M WHERE RSCH_RPTP_BBS_ID = 'BBSMSTR_900000000001' AND ( RSCH_ASMT_TTL LIKE '%'||#{titTxtNm}||'%' OR WRIT_TXT LIKE '%'||#{titTxtNm}||'%' ) AND TO_CHAR(TO_DATE(WRT_YMD, 'YYYYMMDD'), 'YYYY-MM-DD') BETWEEN #{writStDt} AND #{writEdDt} ORDER BY 1 DESC

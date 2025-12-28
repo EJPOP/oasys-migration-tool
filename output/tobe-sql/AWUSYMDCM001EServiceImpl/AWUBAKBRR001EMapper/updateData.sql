@@ -1,1 +1,0 @@
-UPDATE TBAWUBAKBRR001M SET DCSEXP_YE = #{dcsexpYe},  DCSEXP_DVSN_CD = #{dcsexpDvsnCd},  RSCH_ASMT_TTL = #{titNm} /* 연구과제제목 */,  FNL_USR_ID = #{ssUsrId} /* 최종사용자아이디 */,  LAST_PRCS_DEPT_CD = #{ssDptCd} /* 최종처리부서코드 */,  FNL_MNU_ID = #{ssMnuId} /* 최종메뉴아이디 */,  LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */WHERE FRS_MDM_SQNO = #{srno}

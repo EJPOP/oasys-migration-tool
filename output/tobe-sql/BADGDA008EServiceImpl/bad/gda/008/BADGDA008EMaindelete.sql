@@ -1,1 +1,0 @@
-DELETE FROM TB_BADGDA004M /* 관련법령통지통보 */ WHERE INST_CD = #INST_CD# /* 기관코드 */ AND LINK_YR = #LINK_YR# /* 년도 */ AND FRS_MDM_SQNO = #FRS_MDM_SQNO# /* 일련번호 */ AND STT_NTFCTN_SECD = #STT_NTFCTN_SECD# /* 법령통보구분코드 */

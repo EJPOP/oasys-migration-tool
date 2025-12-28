@@ -1,1 +1,0 @@
-UPDATE TBCSPSAH001M SET SMT_YN = 'Y' ,  PRGRS_STTS_SECD = '20' /* 진행상태구분코드 */,  SBMSN_YMD = SYSDATE /* 제출일자 */,  LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */WHERE APL_NO = #APL_NO#

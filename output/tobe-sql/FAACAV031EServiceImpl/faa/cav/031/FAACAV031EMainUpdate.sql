@@ -1,1 +1,0 @@
-/* faa/cav/031/FAACAV031EMainUpdate */ UPDATE TWFAACAV003M SET RB_CD = RPAD(#BR_CD#,3,'0') /* 소관국코드 */,  PROF_RBPRSN_CPD_SECD = RPAD(#DIV_CD#,3,'0') /* 증명책임자소관과구분코드 */WHERE 1=1 AND INST_CD = #INST_CD#

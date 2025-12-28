@@ -1,6 +1,0 @@
-SELECT T1.ADT_YR /* 감사년도 */,
-    T1.ADT_NO /* 감사번호 */,
-    T1.DSPS_RQT_SQNO /* 처분요구순번 */,
-    T1.REL_INST_CD /* 관계기관코드 */,
-    T1.RLPR_SQNO /* 관계자순번 */
-FROM TB_BADEAR007M T1 WHERE 1 = 1 AND T1.ADT_YR = #CVLCPT_ADT_YR# AND T1.ADT_NO = #ADT_NO# AND T1.DSPS_RQT_SQNO = #DSPS_RQT_SQNO# AND (T1.CPLT_YN <> 'Y' OR T1.CPLT_YN IS NULL)

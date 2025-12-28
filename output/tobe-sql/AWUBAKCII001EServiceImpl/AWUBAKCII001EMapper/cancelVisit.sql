@@ -1,1 +1,0 @@
-/* AWUBAKCII001EMapper.cancelVisit 견학 신청 취소 */ UPDATE TBAWUBAKCII001M SET CNL_DH = SYSDATE ,  VI_APL_CMPT_YN = 'C' ,  LAST_USER_ID = #{ssUsrId} /* 최종사용자아이디 */,  FNL_DEAL_DPT_CD = #{ssDptCd} /* 최종처리부서코드 */,  LAST_MENU_ID = 'test' /* 최종메뉴아이디 */,  LAST_MDFCN_DT = SYSDATE /* 최종수정일시 */WHERE VI_ID = #{viId}

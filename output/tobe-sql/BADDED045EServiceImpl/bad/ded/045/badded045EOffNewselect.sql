@@ -1,6 +1,0 @@
-SELECT INFO_YR /* 정보년도 */,
-    HLDY_CRTR_MND /* 휴일기준월일 */,
-    HLDY_SECD /* 휴일구분코드 */,
-    HLDY_NM /* 휴일명 */,
-    HLDY_LNCL_YN /* 휴일음력여부 */
-FROM TB_BADDED013B WHERE 1=1 AND INFO_YR >= #strRefYear# AND INFO_YR ='0101' AND HLDY_CRTR_MND <= '1231' AND HLDY_SECD =3 ORDER BY INFO_YR,HLDY_CRTR_MND

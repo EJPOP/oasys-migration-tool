@@ -1,3 +1,0 @@
-SELECT HIRK_DPT_CD AS DEPT_CD,
-    F_DPT_INFO(HIRK_DPT_CD, '1') AS DEPT_NM /* 부서명 */
-FROM TBDCMACM002M WHERE DEPT_TPCD = 'A' /*지원부서만 가져온다. USE_YN컬럼을 안건 이유는 그것을 걸 경우 폐지된 부서는 볼수 없기 때문이다*/ AND HIRK_DPT_CD IS NOT NULL GROUP BY HIRK_DPT_CD

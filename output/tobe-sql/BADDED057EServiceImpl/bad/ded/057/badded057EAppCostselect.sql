@@ -1,8 +1,0 @@
-SELECT A.BTEXP_FE_SQNO /* 출장비연비순번 */,
-    A.BZTRP_SECD /* 출장구분코드 */,
-    F_CODE_NM('1000031',A.BZTRP_SECD) AS F_CODE_NM /* 츌장구분명 */,
-    A.CRTR_BGNG_YMD /* 기준시작일자 */,
-    A.CRTR_END_YMD /* 기준종료일자 */,
-    A.CRTR_APLCN_YMD /* 기준적용일자 */,
-    A.RMRK_CN /* 비고내용 */
-FROM TB_BADDED201B A WHERE 1=1 AND BZTRP_SECD = #BZTRP_SECD# AND A.CRTR_BGNG_YMD = #CRTR_BGNG_DT# ORDER BY A.BTEXP_FE_SQNO DESC

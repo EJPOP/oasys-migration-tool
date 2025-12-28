@@ -1,8 +1,0 @@
-SELECT A.CRU_RRNO_SCRTY /* 부패주민등록번호보안 */,
-    A.FRS_MDM_SQNO /* 포렌식매체순번 */,
-    A.PNSH_DT /* 징계일 */,
-    A.PNSH_TYP_CD /* 징계유형코드 */,
-    A.WRDO_TXT /* 비위내용 */,
-    A.PNSH_ORG_CD /* 징계기관코드 */,
-    (SELECT B.PROF_RBPRSN_INST_NM AS PROF_RBPRSN_INST_NM /* 증명책임자기관명 */
-FROM TBDCMACM015M B WHERE B.INST_CD = A.PNSH_ORG_CD) AS PNSH_ORG_NM /* 징계기관명 */ FROM TBCSPBII351L A WHERE A.CRU_RRNO_SCRTY = #CRU_RRNO_SCRTY# ORDER BY A.FRS_MDM_SQNO DESC

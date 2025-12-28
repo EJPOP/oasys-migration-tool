@@ -1,8 +1,0 @@
-SELECT CVLCPT_ADT_YR /* 민원감사년도 */,
-    ADT_FLD_NM /* 감사분야명 */,
-    ADT_MTTR_CN /* 감사사항내용 */,
-    ADT_KND_NM /* 감사종류명 */,
-    ADT_BGNG_YMD||' ~ '||ADT_END_YMD AS ADT_YMD /* 감사일자 */,
-    ADT_CPSC_NOPE /* 감사연인원인원수 */,
-    CPADT_EMPHS_CN /* 위탁대행감사중점내용 */
-FROM TBFAAAEA019M WHERE INST_CD = #INST_CD# WHERE INST_CD LIKE REPLACE(#INST_CD#,'000','') || '%' AND CVLCPT_ADT_YR >= #strAudSYrPln# AND CVLCPT_ADT_YR AND ADT_FLD_SECD = #ADT_FLD_SECD# AND DEL_YN = 'N' ORDER BY CVLCPT_ADT_YR DESC, ADT_BGNG_YMD DESC

@@ -1,2 +1,0 @@
-SELECT A.STT_LNKG_ID /* 법령연결아이디 */
-FROM TB_BADCMR013M A /*PC장비코드*/ WHERE 1=1 AND REPLACE(A.STT_NM,' ','') = #strLawTitle# ORDER BY A.STT_LNKG_ID

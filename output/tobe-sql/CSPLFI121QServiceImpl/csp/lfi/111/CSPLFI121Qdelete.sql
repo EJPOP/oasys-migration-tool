@@ -1,1 +1,0 @@
-DELETE FROM TBCSPLFI002L WHERE DDCT_YM = #deduction_date#

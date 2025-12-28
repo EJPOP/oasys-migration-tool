@@ -1,2 +1,8 @@
-rootProject.name = 'oasys-migration-tool'
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
 
+rootProject.name = 'oasys-migration-tool'

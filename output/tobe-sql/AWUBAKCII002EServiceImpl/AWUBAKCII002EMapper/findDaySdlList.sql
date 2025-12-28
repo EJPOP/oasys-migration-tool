@@ -1,6 +1,0 @@
-/* AWUBAKCII002EMapper.findDaySdlList 일별 일정 리스트 조회 */ SELECT FRS_MDM_SQNO /* 포렌식매체순번 */,
-    SDL_DH,
-    SUBSTR(SDL_TM, 1, 2) || ':' || SUBSTR(SDL_TM, 3, 2) AS SUBSTR,
-    SDL_NM,
-    SDL_PLC
-FROM TBAWUBAKCII002M WHERE 1=1 AND SDL_DH = #{searchDay} ORDER BY SDL_DH ASC, SDL_TM ASC

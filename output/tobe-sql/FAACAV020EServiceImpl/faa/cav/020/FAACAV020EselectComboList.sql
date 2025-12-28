@@ -1,3 +1,0 @@
-/* faa/cav/020/FAACAV020EselectComboList */ SELECT ACNTG_CD /* 회계코드 */,
-    '[' || ACNTG_CD || ']' || ACNTG_CDNM AS ACNTG_CD /* 회계코드 */
-FROM TWFAACAV024C WHERE ACNTG_SECD = '04' ORDER BY RMRK_DTL_CN, CD

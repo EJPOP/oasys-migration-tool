@@ -1,2 +1,0 @@
-INSERT INTO TBCSPOEP002M (CLMETG_SRNO /* 소집일련번호 */, APOLS_DT /* 응소일 */, OFOD_HM /* 발령시분 */, APOLS_HM /* 응소시분 */, CLSNG_HM /* 마감시분 */, CLMETG_TIT_TXT /* 소집제목 */, FRST_USER_ID /* 최초사용자ID */, LAST_USER_ID /* 최종사용자ID */, LAST_PRCS_DEPT_CD /* 최종거래부서코드 */, LAST_MENU_ID /* 최종메뉴ID */, FRST_REG_DT /* 최초등록일시 */, LAST_MDFCN_DT /* 최종수정일시 */) VALUES ( (SELECT NVL(MAX(CLMETG_SRNO),0) + 1
-FROM TBCSPOEP002M) ,#APOLS_DT# ,#OFOD_HM# ,#APOLS_HM# ,#CLSNG_HM# ,#CLMETG_TIT_TXT# ,#FRT_USR_ID# ,#FNL_USR_ID# ,#FNL_DEAL_DPT_CD# ,#FNL_MNU_ID# ,SYSDATE ,SYSDATE )

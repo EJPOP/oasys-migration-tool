@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'oasys'
@@ -17,25 +18,17 @@ repositories {
 }
 
 dependencies {
-
-    // SQL Parser (핵심)
     implementation 'com.github.jsqlparser:jsqlparser:4.6'
-
-    // CSV 처리
     implementation 'org.apache.commons:commons-csv:1.10.0'
-
-    // YAML (config)
     implementation 'org.yaml:snakeyaml:2.2'
 
-    // Excel 리포트 (선택)
-    implementation 'org.apache.poi:poi:5.2.5'
-    implementation 'org.apache.poi:poi-ooxml:5.2.5'
+    // ⚠️ POI는 버전 섞지 말고 맞추는 게 안전
+    implementation 'org.apache.poi:poi:5.4.0'
+    implementation 'org.apache.poi:poi-ooxml:5.4.0'
 
-    // Logging
     implementation 'org.slf4j:slf4j-api:2.0.12'
     implementation 'ch.qos.logback:logback-classic:1.5.6'
 
-    // Test
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 }
 
@@ -51,9 +44,30 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
 }
 
+// ✅ shadowJar 설정 (타입 지정/import 없이)
+tasks.named("shadowJar") {
+    archiveClassifier.set("all")
+
+    // logback/slf4j/poi 등 META-INF/services 충돌 방지
+    mergeServiceFiles()
+
+    manifest {
+        attributes("Main-Class": application.mainClass.get())
+    }
+}
+
+// 실행 편의 task들
 tasks.register("runAliasSqlGenerateCli", JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
-    mainClass = "oasys.migration.cli.AliasSqlGenerateCli"
+    mainClass = "oasys.migration.alias.AliasSqlGenerateCli"
+    if (project.hasProperty("appArgs")) {
+        args project.property("appArgs").toString().split("\\s+")
+    }
+}
+
+tasks.register("runMigrationVerifyCli", JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = "oasys.migration.cli.MigrationVerifyCli"
     if (project.hasProperty("appArgs")) {
         args project.property("appArgs").toString().split("\\s+")
     }

@@ -1,1 +1,0 @@
-/* AWUBAKCII002EMapper.updateSdl 일정 수정 */ UPDATE TBAWUBAKCII002M SET SDL_DH = #{sdlDh} ,  SDL_TM = #{sdlTm} ,  SDL_PLC = #{sdlPlc} ,  SDL_NM = #{sdlNm} ,  LAST_USER_ID = #{ssUsrId} /* 최종사용자아이디 */,  FNL_DEAL_DPT_CD = #{ssDptCd} /* 최종처리부서코드 */,  LAST_MENU_ID = #{ssMnuId} /* 최종메뉴아이디 */,  FNL_MDF_DH = SYSDATE /* 최종수정일시 */WHERE SRNO = #{FRS_MDM_SQNO}

@@ -1,8 +1,0 @@
-SELECT D1.JRSD_INST_CD /* 소관기관코드 */,
-    D1.SYS_NM,
-    D1.UNT_SYS_NM,
-    D1.TBL_ID /* 테이블아이디 */,
-    D1.TBL_NM,
-    D1.TBL_DES,
-    D1.DATA_NOC
-FROM TBFAAAEA003M D1 LEFT OUTER JOIN TBFAAAEA001M D2 ON D1.JRSD_INST_CD = D2.JRSD_INST_CD AND D1.SYS_NM = D2.SYS_NM WHERE 1=1 AND D1.UNT_SYS_NM = #strUntSysNm# AND D1.SYS_NM = #strSysNm# AND D2.BAI_ORG_CD = #strCoptOrgCd# AND (D1.TBL_ID LIKE '%'||#strSearchStr#||'%' OR D1.TBL_NM LIKE '%'||#strSearchStr#||'%')

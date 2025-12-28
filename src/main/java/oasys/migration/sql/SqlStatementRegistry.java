@@ -1,5 +1,8 @@
 package oasys.migration.sql;
 
+import java.nio.file.Path;
+import java.util.List;
+
 public class SqlStatementRegistry {
 
     private final MapperXmlIndex index = new MapperXmlIndex();
@@ -9,7 +12,12 @@ public class SqlStatementRegistry {
         if (initialized) return;
 
         SqlsDirectoryScanner scanner = new SqlsDirectoryScanner();
-        index.buildIndex(scanner.scanAllSqlXml());
+        List<Path> xmls = scanner.scanAllSqlXml();
+
+        System.out.println("[INIT] baseDir = " + safe(scanner.getResolvedBaseDir()));
+        System.out.println("[INIT] sqlsDir = " + safe(scanner.getResolvedSqlsDir()));
+
+        index.buildIndex(xmls);
 
         initialized = true;
         System.out.println("[INIT] SQL index size = " + index.size());
@@ -17,5 +25,9 @@ public class SqlStatementRegistry {
 
     public SqlStatement get(String namespace, String sqlId) {
         return index.get(namespace, sqlId);
+    }
+
+    private static String safe(Path p) {
+        return p == null ? "" : p.toAbsolutePath().toString();
     }
 }

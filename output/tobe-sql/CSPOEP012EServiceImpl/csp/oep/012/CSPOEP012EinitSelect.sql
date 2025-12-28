@@ -1,4 +1,0 @@
-SELECT CD,
-    CD_NM
-FROM (select *
-from TBDCMACM013C where CMM_CD_DVSN_CD ='1000291' AND CD IN ('1', '2') ) ORDER BY CD

@@ -1,3 +1,0 @@
-SELECT SRECS_DEPT_CD /* 심사재심의부서코드 */,
-    CNSTN_MBCMT_DEPT_NM /* 자문위원부서명 */
-FROM TBDCMACM002M WHERE 1=1 AND USE_YN = 'Y'

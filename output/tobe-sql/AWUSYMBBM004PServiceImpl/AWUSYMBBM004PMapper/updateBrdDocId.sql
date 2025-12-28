@@ -1,1 +1,0 @@
-UPDATE TBAWUSYMBBM005M SET CVLCPT_DOC_ID = #{docId} /* 민원문서아이디 */, IMG_DOC_ID = #{imgDocId} WHERE RSCH_RPTP_BBS_ID = #{brdId} AND POST_NO = #{postNo}

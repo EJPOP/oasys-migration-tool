@@ -1,1 +1,0 @@
-DELETE FROM TB_BADGDA001M /* 통보사항기본 */ WHERE INST_CD = #INST_CD# /* 기관코드 */ AND NTFCTN_SECD = #NTFCTN_SECD# /* 통보구분코드 */ AND NTFCTN_SQNO = #NTFCTN_SQNO# /* 통보번호 */

@@ -1,3 +1,0 @@
-SELECT EVL_GP_CD /* 평가군코드 */,
-    MAX(EVL_GP_NM) AS EVL_GP_NM /* 평가군명 - 평가군명이 바꼈을수도 있으니깐? */
-FROM TBCSPAOE018M WHERE 1 = 1 GROUP BY EVL_GP_CD ORDER BY CD_NM

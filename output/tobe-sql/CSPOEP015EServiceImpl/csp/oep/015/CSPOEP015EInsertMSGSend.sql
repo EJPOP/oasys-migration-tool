@@ -1,1 +1,0 @@
-CALL NURI2_MESSAGE_SEND('0220112114', #TNB#, '감사원 문자통보', #strMsgTxt#||'')

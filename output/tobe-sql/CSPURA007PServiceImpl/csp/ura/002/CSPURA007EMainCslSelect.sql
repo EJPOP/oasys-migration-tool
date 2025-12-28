@@ -1,5 +1,0 @@
-SELECT CNSTN_MBCMT_NM AS CNSTN_MBCMT_NM /* 자문위원명 */,
-    CNSTN_MBCMT_DEPT_NM /* 자문위원부서명 */,
-    JBPS_NM /* 직위명 */,
-    CNSTN_MBCMT_MJR_NM /* 자문위원전공명 */
-FROM TB_CSPURA005M WHERE CNSTN_MBCMT_NM LIKE '%'||#NAM#||'%'
